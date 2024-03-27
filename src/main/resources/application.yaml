@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: Jeux Miagiques
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: pass123
+  jpa:
+    generate-ddl: true
+    show-sql: true
+
