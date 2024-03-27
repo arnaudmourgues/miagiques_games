@@ -7,9 +7,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
     private final UserRespository userRespository;
+    private final SpectateurService spectateurService;
 
-    public UserService(UserRespository userRespository) {
+    public UserService(UserRespository userRespository, SpectateurService spectateurService) {
         this.userRespository = userRespository;
+        this.spectateurService = spectateurService;
     }
 
     public void createUser(User user){
@@ -18,6 +20,7 @@ public class UserService {
             throw new IllegalStateException("User already exists");
         }
         else userRespository.save(user);
+
     }
 
     public boolean checkUser(User user) {

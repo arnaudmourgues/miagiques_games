@@ -1,11 +1,14 @@
 package com.example.jo.db.entities;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
 import java.io.Serializable;
 import java.util.UUID;
 
-public abstract class Personne implements Serializable {
+@Entity
+public abstract class Personne {
+    //to check https://stackoverflow.com/questions/3827494/inherited-abstract-class-with-jpa-hibernate
     @Id
     private UUID id;
     private String nom;

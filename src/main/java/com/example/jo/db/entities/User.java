@@ -13,6 +13,9 @@ public class User {
     private String username;
     private String email;
     private String password;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "personne_id", referencedColumnName = "id")
+    private Personne personne;
 
     public User() {
     }
