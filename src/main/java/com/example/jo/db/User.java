@@ -11,13 +11,13 @@ import java.util.UUID;
 public abstract class User {
     //to check https://en.wikibooks.org/wiki/Java_Persistence/Inheritance#Single_Table_Inheritance
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private UUID id;
     private String nom;
     private String prenom;
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
     private String username;
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
     private String email;
     @Column(nullable = false)
     private String password;

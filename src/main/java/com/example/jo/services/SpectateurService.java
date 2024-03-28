@@ -1,42 +1,36 @@
 package com.example.jo.services;
 
 import com.example.jo.db.Spectateur;
-import com.example.jo.repositories.SpectateurRepository;
+import com.example.jo.db.User;
+import com.example.jo.repositories.UserRespository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class SpectateurService {
-    private final SpectateurRepository spectateurRepository;
+    private final UserRespository userRepository;
     private final UserService userService;
 
-    public SpectateurService(SpectateurRepository spectateurRepository, UserService userService) {
-        this.spectateurRepository = spectateurRepository;
+    public SpectateurService(UserRespository userRepository, UserService userService) {
+        this.userRepository = userRepository;
         this.userService = userService;
     }
     
     public void createSpectateur(Spectateur spectateur){
-        //check if spectateur already exists
-        if(checkSpectateur(spectateur)){
-            throw new IllegalStateException("Spectateur already exists");
-        }
-        else spectateurRepository.save(spectateur);
+        userService.create(spectateur);
     }
 
     private boolean checkSpectateur(Spectateur spectateur) {
-        return spectateurRepository.existsById(spectateur.getId());
+        return userService.check(spectateur);
     }
 
     public void deleteSpectateur(Spectateur spectateur) {
-        if(!checkSpectateur(spectateur)){
-            throw new IllegalStateException("Spectateur does not exist");
-        }
-        else spectateurRepository.deleteById(spectateur.getId());
+        userService.delete(spectateur);
     }
 
     public Spectateur connectSpectateur(Spectateur spectateur) {
-        if (userService.connectUser(spectateur)) {
-            return spectateurRepository.findById(spectateur.getId()).get();
-        }
-        else throw new IllegalStateException("Username/Email or password is incorrect");
+        User user = userService.connect(spectateur);
+        if (user instanceof Spectateur) {
+            return (Spectateur) user;
+        } else throw new IllegalStateException("User is not a Spectateur");
     }
 }
