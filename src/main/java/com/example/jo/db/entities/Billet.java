@@ -1,8 +1,7 @@
 package com.example.jo.db.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.example.jo.services.SpectateurService;
+import jakarta.persistence.*;
 
 import java.util.UUID;
 
@@ -12,7 +11,9 @@ public class Billet {
     @GeneratedValue
     private UUID id;
     private UUID idEpreuve;
-    private UUID idSpectateur;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "idSpectateur", referencedColumnName = "id")
+    private Spectateur idSpectateur;
     private double prix;
     private Etat etat;
 

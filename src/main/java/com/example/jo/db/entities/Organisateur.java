@@ -1,10 +1,8 @@
 package com.example.jo.db.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-
-import java.util.UUID;
+import jakarta.persistence.*;
 
 @Entity
-public class Organisateur extends Personne{
+@DiscriminatorValue("o")
+public class Organisateur extends User {
 }
