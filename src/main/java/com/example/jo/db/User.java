@@ -1,4 +1,4 @@
-package com.example.jo.db.entities;
+package com.example.jo.db;
 
 import jakarta.persistence.*;
 
@@ -6,7 +6,7 @@ import java.util.UUID;
 
 @Entity
 @Inheritance
-@DiscriminatorColumn(name = "type_personne")
+@DiscriminatorColumn(name = "type_users", discriminatorType = DiscriminatorType.STRING)
 @Table(name = "users")
 public abstract class User {
     //to check https://en.wikibooks.org/wiki/Java_Persistence/Inheritance#Single_Table_Inheritance

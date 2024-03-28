@@ -2,6 +2,7 @@ spring:
   application:
     name: Jeux Miagiques
   datasource:
+    #docker run -d --name postgresJeuxMiagiques -p 5432:5432 -e POSTGRES_PASSWORD=pass123 postgres
     url: jdbc:postgresql://localhost:5432/postgres
     driver-class-name: org.postgresql.Driver
     username: postgres
@@ -11,4 +12,3 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
-

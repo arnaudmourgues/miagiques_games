@@ -1,4 +1,4 @@
-package com.example.jo.db.entities;
+package com.example.jo.db;
 
 import jakarta.persistence.*;
 

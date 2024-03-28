@@ -1,10 +1,8 @@
 package com.example.jo.services;
 
-import com.example.jo.db.entities.Spectateur;
+import com.example.jo.db.Spectateur;
 import com.example.jo.repositories.SpectateurRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 @Service
 public class SpectateurService {

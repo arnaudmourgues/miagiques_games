@@ -1,7 +1,6 @@
 package com.example.jo.controllers;
 
-import com.example.jo.db.entities.Spectateur;
-import com.example.jo.db.entities.User;
+import com.example.jo.db.Spectateur;
 import com.example.jo.services.SpectateurService;
 import org.springframework.web.bind.annotation.PostMapping;
 

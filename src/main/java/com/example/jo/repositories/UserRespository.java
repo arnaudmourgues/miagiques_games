@@ -1,6 +1,6 @@
 package com.example.jo.repositories;
 
-import com.example.jo.db.entities.User;
+import com.example.jo.db.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

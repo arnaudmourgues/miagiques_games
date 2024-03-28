@@ -1,7 +1,7 @@
 package com.example.jo.services;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
-import com.example.jo.db.entities.User;
+import com.example.jo.db.User;
 import com.example.jo.repositories.UserRespository;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +11,7 @@ import java.security.SecureRandom;
 public class UserService {
     private final UserRespository userRespository;
 
-    public UserService(UserRespository userRespository, SpectateurService spectateurService) {
+    public UserService(UserRespository userRespository) {
         this.userRespository = userRespository;
     }
 

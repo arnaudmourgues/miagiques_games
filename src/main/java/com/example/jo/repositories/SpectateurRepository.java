@@ -1,6 +1,6 @@
 package com.example.jo.repositories;
 
-import com.example.jo.db.entities.Spectateur;
+import com.example.jo.db.Spectateur;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
