@@ -14,10 +14,6 @@ public class SpectateurService {
         this.userService = userService;
         this.billetService = billetService;
     }
-    
-    public void createSpectateur(Spectateur spectateur){
-        userService.create(spectateur);
-    }
 
     private boolean checkSpectateur(Spectateur spectateur) {
         return userService.check(spectateur);
@@ -25,12 +21,6 @@ public class SpectateurService {
 
     public void deleteSpectateur(Spectateur spectateur) {
         userService.delete(spectateur);
-    }
-
-    public void connectSpectateur(Spectateur spectateur) {
-        if (checkSpectateur(spectateur)) {
-            userService.connect(spectateur);
-        }
     }
 
     public void acheterBillet(Epreuve epreuve) {

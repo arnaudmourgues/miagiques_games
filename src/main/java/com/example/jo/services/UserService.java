@@ -16,14 +16,6 @@ public class UserService {
         this.userRespository = userRespository;
     }
 
-    public void create(User user) {
-        //hash password
-        byte[] salt = new byte[16];
-        new SecureRandom().nextBytes(salt);
-        user.setPassword(BCrypt.withDefaults().hashToString(12, user.getPassword().toCharArray()));
-        userRespository.save(user);
-    }
-
     public boolean check(User user) {
         return userRespository.existsById(user.getId());
     }
@@ -32,9 +24,5 @@ public class UserService {
         if (!check(user)) {
             throw new IllegalStateException("User does not exist");
         } else userRespository.deleteById(user.getId());
-    }
-
-    public boolean checkByEmail(User user) {
-        return userRespository.existsByEmail(user.getEmail());
     }
 }

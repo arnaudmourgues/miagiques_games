@@ -10,7 +10,6 @@ public class Participation {
     @Id
     @GeneratedValue
     private UUID id;
-    @Column(columnDefinition = "ENUM('inscrit', 'forfait') DEFAULT 'inscrit'")
     private Status status;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_epreuve", referencedColumnName = "id", nullable = false)
@@ -18,6 +17,10 @@ public class Participation {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_participant", referencedColumnName = "id", nullable = false)
     private Participant participant;
+
+    public Participation() {
+        status = Status.INSCRIT;
+    }
 
     public UUID getId() {
         return id;

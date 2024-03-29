@@ -1,9 +1,8 @@
 package com.example.jo.controllers;
 
-import com.example.jo.DTOs.JwtDto;
-import com.example.jo.DTOs.SignInDto;
-import com.example.jo.DTOs.SignUpDto;
-import com.example.jo.DTOs.SignUpUserDto;
+import com.example.jo.entities.DTOs.JwtDto;
+import com.example.jo.entities.DTOs.SignInDto;
+import com.example.jo.entities.DTOs.SignUpUserDto;
 import com.example.jo.config.auth.TokenProvider;
 import com.example.jo.entities.User;
 import com.example.jo.services.AuthService;
@@ -12,13 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/auth")
 public class AuthController {
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -38,6 +34,18 @@ public class AuthController {
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
         var authUser = authenticationManager.authenticate(usernamePassword);
         var accessToken = tokenService.generateAccessToken((User) authUser.getPrincipal());
+        System.out.println(((User) authUser.getPrincipal()).getUsername());
         return ResponseEntity.ok(new JwtDto(accessToken));
+    }
+
+    @DeleteMapping("/account/deleteUser")
+    public ResponseEntity<?> delete() {
+        service.delete();
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @GetMapping("/account")
+    public ResponseEntity<String> getAccount() {
+        return ResponseEntity.ok(service.getAccount());
     }
 }

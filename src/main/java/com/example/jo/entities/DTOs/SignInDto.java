@@ -1,4 +1,4 @@
-package com.example.jo.DTOs;
+package com.example.jo.entities.DTOs;
 
 public record SignInDto(
         String login,

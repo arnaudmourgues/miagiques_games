@@ -1,4 +1,4 @@
-package com.example.jo.DTOs;
+package com.example.jo.entities.DTOs;
 
 import com.example.jo.entities.enums.UserRole;
 

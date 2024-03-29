@@ -1,7 +1,7 @@
 package com.example.jo.services;
 
-import com.example.jo.DTOs.SignUpDto;
-import com.example.jo.DTOs.SignUpUserDto;
+import com.example.jo.entities.DTOs.SignUpDto;
+import com.example.jo.entities.DTOs.SignUpUserDto;
 import com.example.jo.entities.Controleur;
 import com.example.jo.entities.Organisateur;
 import com.example.jo.entities.Spectateur;
@@ -9,6 +9,8 @@ import com.example.jo.entities.User;
 import com.example.jo.entities.enums.UserRole;
 import com.example.jo.repositories.UserRespository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,7 +28,7 @@ public class AuthService implements UserDetailsService {
     }
 
     public UserDetails signUpUser(SignUpUserDto data) {
-        if (repository.findByLogin(data.login()) != null) {
+        if (repository.findByUsernameOrEmail(data.login()) != null) {
             throw new IllegalArgumentException("User already exists");
         }
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
@@ -35,7 +37,7 @@ public class AuthService implements UserDetailsService {
     }
 
     public UserDetails signUp(SignUpDto data) {
-        if (repository.findByLogin(data.login()) != null) {
+        if (repository.findByUsernameOrEmail(data.login()) != null) {
             throw new IllegalArgumentException("User already exists");
         }
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
@@ -46,5 +48,16 @@ public class AuthService implements UserDetailsService {
             default -> throw new IllegalArgumentException("Invalid role");
         }
         return repository.save(newUser);
+    }
+
+    public void delete() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        var user = auth.getPrincipal();
+        System.out.println(user);
+    }
+
+    public String getAccount() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return (String) auth.getPrincipal();
     }
 }

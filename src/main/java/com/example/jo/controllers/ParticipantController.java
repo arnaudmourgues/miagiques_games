@@ -4,12 +4,10 @@ import com.example.jo.entities.Epreuve;
 import com.example.jo.entities.Participant;
 import com.example.jo.services.ParticipantService;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/participant")
 public class ParticipantController {
     private final ParticipantService participantService;
 

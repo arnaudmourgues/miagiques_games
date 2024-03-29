@@ -2,11 +2,13 @@ package com.example.jo.entities;
 
 import com.example.jo.entities.enums.Etat;
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.util.UUID;
 
 @Entity
 @Table(name = "billets")
+@Getter
 public class Billet {
     @Id
     @GeneratedValue
@@ -19,7 +21,7 @@ public class Billet {
     private Spectateur spectateur;
     @Column(nullable = false)
     private double prix;
-    @Column(nullable = false, columnDefinition = "ENUM('valide', 'annule', 'deja_utilise') DEFAULT 'valide'")
+    @Column(nullable = false)
     private Etat etat;
 
     public Billet() {
@@ -30,7 +32,4 @@ public class Billet {
         this.id = id;
     }
 
-    public UUID getId() {
-        return id;
-    }
 }
