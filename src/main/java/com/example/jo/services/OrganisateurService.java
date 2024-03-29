@@ -1,16 +1,18 @@
 package com.example.jo.services;
 
-import com.example.jo.db.*;
+import com.example.jo.entities.*;
 import org.springframework.stereotype.Service;
 
 @Service
 public class OrganisateurService {
     private final UserService userService;
     private final DelegationService delegationService;
+    private final EpreuveService epreuveService;
 
-    public OrganisateurService(UserService userService, DelegationService delegationService) {
+    public OrganisateurService(UserService userService, DelegationService delegationService, EpreuveService epreuveService) {
         this.userService = userService;
         this.delegationService = delegationService;
+        this.epreuveService = epreuveService;
     }
 
     public Organisateur connect(Organisateur organisateur) {
@@ -30,7 +32,9 @@ public class OrganisateurService {
 
     public void createParticipant(Participant user) {
         if(userService.checkByEmail(user)){
-            throw new IllegalStateException("User already exists");
+            throw new IllegalStateException("Le participant existe déjà");
+        } if(user.getDelegation() == null){
+            throw new IllegalStateException("Le participant doit appartenir à une délégation");
         }
         userService.create(user);
     }
@@ -48,5 +52,13 @@ public class OrganisateurService {
 
     public void deleteControleur(Controleur user) {
         userService.delete(user);
+    }
+
+    public void createEpreuve(Epreuve epreuve) {
+        epreuveService.createEpreuve(epreuve);
+    }
+
+    public void deleteEpreuve(Epreuve epreuve) {
+        epreuveService.deleteEpreuve(epreuve);
     }
 }

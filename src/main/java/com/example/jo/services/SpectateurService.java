@@ -1,18 +1,18 @@
 package com.example.jo.services;
 
-import com.example.jo.db.Spectateur;
-import com.example.jo.db.User;
-import com.example.jo.repositories.UserRespository;
+import com.example.jo.entities.Epreuve;
+import com.example.jo.entities.Spectateur;
+import com.example.jo.entities.User;
 import org.springframework.stereotype.Service;
 
 @Service
 public class SpectateurService {
-    private final UserRespository userRepository;
     private final UserService userService;
+    private final BilletService billetService;
 
-    public SpectateurService(UserRespository userRepository, UserService userService) {
-        this.userRepository = userRepository;
+    public SpectateurService(UserService userService, BilletService billetService) {
         this.userService = userService;
+        this.billetService = billetService;
     }
     
     public void createSpectateur(Spectateur spectateur){
@@ -27,10 +27,13 @@ public class SpectateurService {
         userService.delete(spectateur);
     }
 
-    public Spectateur connectSpectateur(Spectateur spectateur) {
-        User user = userService.connect(spectateur);
-        if (user instanceof Spectateur) {
-            return (Spectateur) user;
-        } else throw new IllegalStateException("User is not a Spectateur");
+    public void connectSpectateur(Spectateur spectateur) {
+        if (checkSpectateur(spectateur)) {
+            userService.connect(spectateur);
+        }
+    }
+
+    public void acheterBillet(Epreuve epreuve) {
+        billetService.createBillet(epreuve);
     }
 }

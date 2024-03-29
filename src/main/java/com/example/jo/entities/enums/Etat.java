@@ -1,4 +1,4 @@
-package com.example.jo.db;
+package com.example.jo.entities.enums;
 
 public enum Etat {
     VALIDE,

@@ -1,6 +1,6 @@
 package com.example.jo.services;
 
-import com.example.jo.db.Controleur;
+import com.example.jo.entities.Controleur;
 import com.example.jo.repositories.UserRespository;
 import org.springframework.stereotype.Service;
 

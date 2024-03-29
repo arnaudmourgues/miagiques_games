@@ -1,7 +1,7 @@
 package com.example.jo.services;
 
-import com.example.jo.db.Epreuve;
-import com.example.jo.db.Participant;
+import com.example.jo.entities.Epreuve;
+import com.example.jo.entities.Participant;
 import com.example.jo.repositories.UserRespository;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,11 @@ public class ParticipantService {
         this.userRepository = userRepository;
     }
 
-    private void participerEpreuve(Epreuve epreuve, Participant participant) {
-        epreuveService.participerEpreuve(epreuve, participant);
+    public void inscrireEpreuve(Epreuve epreuve, Participant participant) {
+        epreuveService.inscrireEpreuve(epreuve, participant);
+    }
+
+    public void desinscrireEpreuve(Epreuve epreuve, Participant participant) {
+        epreuveService.desinscrireEpreuve(epreuve, participant);
     }
 }

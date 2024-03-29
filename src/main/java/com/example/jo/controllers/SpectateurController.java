@@ -1,30 +1,42 @@
 package com.example.jo.controllers;
 
-import com.example.jo.db.Spectateur;
+import com.example.jo.DTOs.SignUpUserDto;
+import com.example.jo.entities.Epreuve;
+import com.example.jo.entities.Spectateur;
+import com.example.jo.services.AuthService;
 import com.example.jo.services.SpectateurService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/spectateur")
 public class SpectateurController {
     private final SpectateurService spectateurService;
+    private final AuthService authService;
 
-    public SpectateurController(SpectateurService spectateurService) {
+    public SpectateurController(SpectateurService spectateurService, AuthService authService) {
         this.spectateurService = spectateurService;
+        this.authService = authService;
     }
 
-    @PostMapping("/create")
-    public void createSpectateur(@RequestBody Spectateur spectateur){
-        spectateurService.createSpectateur(spectateur);
+    @PostMapping("/signup")
+    public ResponseEntity<?> signUp(@RequestBody SignUpUserDto data) {
+        authService.signUpUser(data);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
-
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
     public void deleteSpectateur(@RequestBody Spectateur spectateur){
         spectateurService.deleteSpectateur(spectateur);
     }
 
     @PostMapping("/connect")
-    public Spectateur connectSpectateur(@RequestBody Spectateur spectateur){
-        return spectateurService.connectSpectateur(spectateur);
+    public void connectSpectateur(@RequestBody Spectateur spectateur){
+        spectateurService.connectSpectateur(spectateur);
+    }
+
+    @PostMapping("/acheter")
+    public void acheterBillet(Epreuve epreuve){
+        spectateurService.acheterBillet(epreuve);
     }
 }

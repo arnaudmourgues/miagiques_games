@@ -12,3 +12,7 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+security:
+  jwt:
+    token:
+      secret-key: ${JWT_SECRET}

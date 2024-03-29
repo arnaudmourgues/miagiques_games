@@ -1,6 +1,6 @@
 package com.example.jo.repositories;
 
-import com.example.jo.db.Delegation;
+import com.example.jo.entities.Delegation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

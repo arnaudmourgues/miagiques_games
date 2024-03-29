@@ -1,14 +1,24 @@
 package com.example.jo.controllers;
 
-import com.example.jo.db.*;
+import com.example.jo.config.auth.TokenProvider;
+import com.example.jo.entities.*;
+import com.example.jo.services.AuthService;
 import com.example.jo.services.OrganisateurService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/admin")
 public class OrganisateurController {
     private final OrganisateurService organisateurService;
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    @Autowired
+    private AuthService service;
+    @Autowired
+    private TokenProvider tokenService;
 
     public OrganisateurController(OrganisateurService organisateurService) {
         this.organisateurService = organisateurService;
@@ -56,4 +66,15 @@ public class OrganisateurController {
         organisateurService.deleteControleur(user);
     }
 
+    @PostMapping("/createEpreuve")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createEpreuve(@RequestBody Epreuve epreuve){
+        organisateurService.createEpreuve(epreuve);
+    }
+
+    @PostMapping("/deleteEpreuve")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteEpreuve(@RequestBody Epreuve epreuve){
+        organisateurService.deleteEpreuve(epreuve);
+    }
 }

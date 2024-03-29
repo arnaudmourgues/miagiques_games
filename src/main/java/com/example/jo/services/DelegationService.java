@@ -1,6 +1,6 @@
 package com.example.jo.services;
 
-import com.example.jo.db.Delegation;
+import com.example.jo.entities.Delegation;
 import com.example.jo.repositories.DelegationRepository;
 import org.springframework.stereotype.Service;
 

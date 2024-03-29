@@ -1,5 +1,6 @@
-package com.example.jo.db;
+package com.example.jo.entities;
 
+import com.example.jo.entities.enums.Etat;
 import jakarta.persistence.*;
 
 import java.util.UUID;
@@ -18,7 +19,7 @@ public class Billet {
     private Spectateur spectateur;
     @Column(nullable = false)
     private double prix;
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "ENUM('valide', 'annule', 'deja_utilise') DEFAULT 'valide'")
     private Etat etat;
 
     public Billet() {

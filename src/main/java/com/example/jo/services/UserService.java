@@ -1,9 +1,9 @@
 package com.example.jo.services;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
-import com.example.jo.db.Participant;
-import com.example.jo.db.User;
+import com.example.jo.entities.User;
 import com.example.jo.repositories.UserRespository;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
@@ -32,17 +32,6 @@ public class UserService {
         if (!check(user)) {
             throw new IllegalStateException("User does not exist");
         } else userRespository.deleteById(user.getId());
-    }
-
-    public User connect(User user) {
-        if (!check(user)) {
-            throw new IllegalStateException("User does not exist");
-        } else {
-            User user1 = userRespository.findById(user.getId()).get();
-            if (BCrypt.verifyer().verify(user.getPassword().toCharArray(), user1.getPassword()).verified) {
-                return user1;
-            } else throw new IllegalStateException("Username/Email or password is incorrect");
-        }
     }
 
     public boolean checkByEmail(User user) {
