@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -34,7 +36,8 @@ public class AuthController {
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
         var authUser = authenticationManager.authenticate(usernamePassword);
         var accessToken = tokenService.generateAccessToken((User) authUser.getPrincipal());
-        System.out.println(((User) authUser.getPrincipal()).getUsername());
+        SecurityContextHolder.getContext().setAuthentication(authUser);
+        System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
         return ResponseEntity.ok(new JwtDto(accessToken));
     }
 
@@ -46,6 +49,7 @@ public class AuthController {
 
     @GetMapping("/account")
     public ResponseEntity<String> getAccount() {
-        return ResponseEntity.ok(service.getAccount());
+        System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
+        return ResponseEntity.ok(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 }

@@ -27,16 +27,16 @@ public class AuthService implements UserDetailsService {
         return repository.findByUsernameOrEmail(username);
     }
 
-    public UserDetails signUpUser(SignUpUserDto data) {
+    public void signUpUser(SignUpUserDto data) {
         if (repository.findByUsernameOrEmail(data.login()) != null) {
             throw new IllegalArgumentException("User already exists");
         }
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
         Spectateur newUser = new Spectateur(data.login(), encryptedPassword, UserRole.USER);
-        return repository.save(newUser);
+        repository.save(newUser);
     }
 
-    public UserDetails signUp(SignUpDto data) {
+    public void signUp(SignUpDto data) {
         if (repository.findByUsernameOrEmail(data.login()) != null) {
             throw new IllegalArgumentException("User already exists");
         }
@@ -47,7 +47,7 @@ public class AuthService implements UserDetailsService {
             case CONTROLLEUR -> newUser = new Controleur(data.login(), encryptedPassword, UserRole.CONTROLLEUR);
             default -> throw new IllegalArgumentException("Invalid role");
         }
-        return repository.save(newUser);
+        repository.save(newUser);
     }
 
     public void delete() {
@@ -58,6 +58,7 @@ public class AuthService implements UserDetailsService {
 
     public String getAccount() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return (String) auth.getPrincipal();
+        var user = auth.getPrincipal();
+        return user.toString();
     }
 }
