@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -27,7 +26,7 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@RequestBody SignUpUserDto data) {
-        service.signUpUser(data);
+        service.signUpSpectateur(data);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -36,20 +35,19 @@ public class AuthController {
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
         var authUser = authenticationManager.authenticate(usernamePassword);
         var accessToken = tokenService.generateAccessToken((User) authUser.getPrincipal());
-        SecurityContextHolder.getContext().setAuthentication(authUser);
-        System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
         return ResponseEntity.ok(new JwtDto(accessToken));
     }
 
-    @DeleteMapping("/account/deleteUser")
+    @DeleteMapping("/account/delete")
     public ResponseEntity<?> delete() {
-        service.delete();
+        service.deleteUser();
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @GetMapping("/account")
-    public ResponseEntity<String> getAccount() {
-        System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
-        return ResponseEntity.ok(SecurityContextHolder.getContext().getAuthentication().getName());
+    public ResponseEntity<?> getAccount() {
+        var user = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(user);
+        return ResponseEntity.ok(user);
     }
 }

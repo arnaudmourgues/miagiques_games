@@ -16,7 +16,6 @@ import java.util.UUID;
 @Getter
 @Entity
 @Inheritance
-@DiscriminatorColumn(name = "type_users", discriminatorType = DiscriminatorType.STRING)
 @Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -44,12 +43,12 @@ public abstract class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (this.role == UserRole.ORGANISATEUR) {
-            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        } else if (this.role == UserRole.CONTROLLEUR) {
-            return List.of(new SimpleGrantedAuthority("ROLE_CONTROLLEUR"));
-        }
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        return switch (role) {
+            case ORGANISATEUR -> List.of(new SimpleGrantedAuthority("ROLE_ORGANISATEUR"));
+            case CONTROLEUR -> List.of(new SimpleGrantedAuthority("ROLE_CONTROLEUR"));
+            case SPECTATEUR -> List.of(new SimpleGrantedAuthority("ROLE_SPECTATEUR"));
+            case PARTICIPANT -> List.of(new SimpleGrantedAuthority("ROLE_PARTICIPANT"));
+        };
     }
 
     @Override
@@ -99,5 +98,9 @@ public abstract class User implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String toString() {
+        return "User(id=" + this.getId() + ", nom=" + this.getNom() + ", prenom=" + this.getPrenom() + ", username=" + this.getUsername() + ", email=" + this.getEmail() + ", password=" + this.getPassword() + ", role=" + this.getRole() + ")";
     }
 }

@@ -1,6 +1,7 @@
 package com.example.jo.config;
 
 import com.example.jo.config.auth.SecurityFilter;
+import com.example.jo.entities.enums.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,8 +32,8 @@ public class AuthConfig {
                         .requestMatchers(HttpMethod.GET, "/*").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/*").permitAll()
                         .requestMatchers(HttpMethod.GET, "/auth/*").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/admin/*").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/admin/controlleur/*").hasRole("CONTROLLEUR")
+                        .requestMatchers(HttpMethod.POST, "/admin/*").hasRole(UserRole.ORGANISATEUR.name())
+                        .requestMatchers(HttpMethod.POST, "/admin/controleur/*").hasRole(UserRole.CONTROLEUR.name())
                         .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

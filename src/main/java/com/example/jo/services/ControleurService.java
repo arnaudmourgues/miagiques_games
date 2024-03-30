@@ -11,8 +11,4 @@ public class ControleurService {
     public ControleurService(UserRespository userRepository) {
         this.userRepository = userRepository;
     }
-
-    public void createControlleur(Controleur controleur){
-        userRepository.save(controleur);
-    }
 }

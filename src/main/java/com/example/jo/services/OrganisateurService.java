@@ -3,6 +3,7 @@ package com.example.jo.services;
 import com.example.jo.entities.DTOs.SignUpDto;
 import com.example.jo.entities.DTOs.SignUpUserDto;
 import com.example.jo.entities.*;
+import com.example.jo.entities.DTOs.UserDto;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,11 +21,11 @@ public class OrganisateurService {
     }
 
     public void createUser(SignUpUserDto data) {
-        authService.signUpUser(data);
+        authService.signUpSpectateur(data);
     }
 
-    public void createModerateur(SignUpDto data) {
-        authService.signUp(data);
+    public void createByOrganisateur(SignUpDto data) {
+        authService.signUpByOrganisateur(data);
     }
 
     public void createDelegation(Delegation delegation) {
@@ -39,8 +40,12 @@ public class OrganisateurService {
         userService.delete(user);
     }
 
-    public void deleteControleur(Controleur user) {
-        userService.delete(user);
+    public void deleteUser(UserDto user) {
+        User u = userService.findByUsername(user.username());
+        if (u == null) {
+            throw new IllegalArgumentException("User does not exist");
+        }
+        userService.delete(u);
     }
 
     public void createEpreuve(Epreuve epreuve) {

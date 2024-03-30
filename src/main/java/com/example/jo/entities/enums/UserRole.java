@@ -1,9 +1,12 @@
 package com.example.jo.entities.enums;
 
+import com.example.jo.entities.Participant;
+
 public enum UserRole {
-    ORGANISATEUR("admin"),
-    CONTROLLEUR("controlleur"),
-    USER("user");
+    ORGANISATEUR("organisateur"),
+    CONTROLEUR("controleur"),
+    SPECTATEUR("spectateur"),
+    PARTICIPANT("participant");
 
     private String role;
 

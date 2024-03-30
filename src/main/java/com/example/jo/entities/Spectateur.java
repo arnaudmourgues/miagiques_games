@@ -4,7 +4,6 @@ import com.example.jo.entities.enums.UserRole;
 import jakarta.persistence.*;
 
 @Entity
-@DiscriminatorValue("s")
 public class Spectateur extends User {
     public Spectateur(String login, String encryptedPassword, UserRole role) {
         super(login, encryptedPassword, role);

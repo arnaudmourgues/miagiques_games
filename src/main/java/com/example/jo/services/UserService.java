@@ -23,6 +23,10 @@ public class UserService {
     public void delete(User user) {
         if (!check(user)) {
             throw new IllegalStateException("User does not exist");
-        } else userRespository.deleteById(user.getId());
+        } else userRespository.delete(user);
+    }
+
+    public User findByUsername(String username) {
+        return userRespository.findByUsername(username);
     }
 }

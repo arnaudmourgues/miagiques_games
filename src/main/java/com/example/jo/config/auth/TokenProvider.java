@@ -23,6 +23,7 @@ public class TokenProvider {
             return JWT.create()
                     .withSubject(user.getUsername())
                     .withClaim("username", user.getUsername())
+                    .withClaim("role", user.getRole().getValue())
                     .withExpiresAt(genAccessExpirationDate())
                     .sign(algorithm);
         } catch (JWTCreationException exception) {
@@ -43,6 +44,6 @@ public class TokenProvider {
     }
 
     private Instant genAccessExpirationDate() {
-        return LocalDateTime.now().plusHours(10).toInstant(ZoneOffset.of("-03:00"));
+        return LocalDateTime.now().plusHours(20).toInstant(ZoneOffset.of("-03:00"));
     }
 }

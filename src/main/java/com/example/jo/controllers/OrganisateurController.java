@@ -3,6 +3,7 @@ package com.example.jo.controllers;
 import com.example.jo.entities.DTOs.SignUpDto;
 import com.example.jo.config.auth.TokenProvider;
 import com.example.jo.entities.*;
+import com.example.jo.entities.DTOs.UserDto;
 import com.example.jo.services.AuthService;
 import com.example.jo.services.OrganisateurService;
 import org.springframework.http.HttpStatus;
@@ -18,33 +19,16 @@ public class OrganisateurController {
         this.organisateurService = organisateurService;
     }
 
-    @PostMapping("/createModerateur")
+    @PostMapping("/createByOrganisateur")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createModerateur(@RequestBody SignUpDto data){
-        organisateurService.createModerateur(data);
+    public void createByOrganisateur(@RequestBody SignUpDto data){
+        organisateurService.createByOrganisateur(data);
     }
 
-    @PostMapping("/createDelegation")
-    @ResponseStatus(HttpStatus.CREATED)
-    public void createDelegation(@RequestBody Delegation delegation){
-        organisateurService.createDelegation(delegation);
-    }
-
-    @PostMapping("/deleteDelegation")
+    @PostMapping("/deleteUser")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteDelegation(@RequestBody Delegation delegation){
-        organisateurService.deleteDelegation(delegation);
-    }
-    @PostMapping("/deleteParticipant")
-    @ResponseStatus(HttpStatus.OK)
-    public void deleteParticipant(@RequestBody Participant user){
-        organisateurService.deleteParticipant(user);
-    }
-
-    @PostMapping("/deleteControleur")
-    @ResponseStatus(HttpStatus.OK)
-    public void deleteControleur(@RequestBody Controleur user){
-        organisateurService.deleteControleur(user);
+    public void deleteUser(@RequestBody UserDto user){
+        organisateurService.deleteUser(user);
     }
 
     @PostMapping("/createEpreuve")
