@@ -6,8 +6,8 @@ import com.example.jo.entities.DTOs.SignInDto;
 import com.example.jo.entities.DTOs.SignUpDto;
 import com.example.jo.entities.DTOs.SignUpUserDto;
 import com.example.jo.entities.User;
-import com.example.jo.services.AuthService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.jo.services.AuthUserService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,12 +18,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
-public class AuthController {
-    @Autowired
+@AllArgsConstructor
+public class AuthUserController {
     private AuthenticationManager authenticationManager;
-    @Autowired
-    private AuthService service;
-    @Autowired
+    private AuthUserService service;
     private TokenProvider tokenService;
 
     @PostMapping("/signup")
@@ -33,9 +31,9 @@ public class AuthController {
     }
 
     @PostMapping("/signup/organisateur")
-    @PreAuthorize("hasRole('ROLE_ORGANISATEUR')")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> signUpByOrganisateur(@RequestBody SignUpDto data) {
+        System.out.println(data);
         service.signUpByOrganisateur(data);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -57,7 +55,6 @@ public class AuthController {
     }
 
     @PostMapping("/delete/organisateur")
-    @PreAuthorize("hasRole('ROLE_ORGANISATEUR')")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> deleteByOrganisateur() {
         service.deleteUser();
@@ -66,6 +63,8 @@ public class AuthController {
 
     @GetMapping("/account")
     public ResponseEntity<?> getAccount() {
+        //get role of the user
+        System.out.println(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
         var user = SecurityContextHolder.getContext().getAuthentication();
         System.out.println(user);
         return ResponseEntity.ok(user);

@@ -2,6 +2,7 @@ package com.example.jo.config;
 
 import com.example.jo.config.auth.SecurityFilter;
 import com.example.jo.entities.enums.UserRole;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,11 +30,7 @@ public class AuthConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.GET, "/*").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/*").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/admin/*").hasRole(UserRole.ORGANISATEUR.name())
-                        .requestMatchers(HttpMethod.POST, "/admin/controleur/*").hasRole(UserRole.CONTROLEUR.name())
-                        .anyRequest().authenticated())
+                        .anyRequest().permitAll())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
@@ -47,5 +44,10 @@ public class AuthConfig {
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
     }
 }

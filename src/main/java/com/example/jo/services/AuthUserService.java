@@ -5,7 +5,7 @@ import com.example.jo.entities.DTOs.SignUpDto;
 import com.example.jo.entities.DTOs.SignUpUserDto;
 import com.example.jo.entities.enums.UserRole;
 import com.example.jo.repositories.UserRespository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,15 +13,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import static com.example.jo.entities.enums.UserRole.*;
 
 @Service
-public class AuthService implements UserDetailsService {
+@AllArgsConstructor
+public class AuthUserService implements UserDetailsService {
     UserRespository repository;
-
-    public AuthService(UserRespository repository) {
-        this.repository = repository;
-    }
 
     @Override
     public UserDetails loadUserByUsername(String username) {
@@ -44,9 +41,9 @@ public class AuthService implements UserDetailsService {
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
         User newUser;
         switch (data.role()) {
-            case ORGANISATEUR -> newUser = new Organisateur(data.login(), encryptedPassword, UserRole.ORGANISATEUR);
-            case CONTROLEUR -> newUser = new Controleur(data.login(), encryptedPassword, UserRole.CONTROLEUR);
-            case PARTICIPANT -> newUser = new Participant(data.login(), encryptedPassword, UserRole.PARTICIPANT);
+            case "ORGANISATEUR" -> newUser = new Organisateur(data.login(), encryptedPassword, ORGANISATEUR);
+            case "CONTROLEUR" -> newUser = new Controleur(data.login(), encryptedPassword, CONTROLEUR);
+            case "PARTICIPANT" -> newUser = new Participant(data.login(), encryptedPassword, PARTICIPANT);
             default -> throw new IllegalArgumentException("Invalid role");
         }
         repository.save(newUser);
