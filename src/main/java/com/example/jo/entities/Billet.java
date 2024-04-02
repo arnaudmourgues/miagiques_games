@@ -18,7 +18,7 @@ public class Billet {
     private Epreuve epreuve;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_spectateur", referencedColumnName = "id", nullable = false)
-    private Spectateur spectateur;
+    private User spectateur;
     @Column(nullable = false)
     private double prix;
     @Column(nullable = false)

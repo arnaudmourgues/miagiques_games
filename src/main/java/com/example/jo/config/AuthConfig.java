@@ -31,7 +31,6 @@ public class AuthConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.GET, "/*").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/*").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/auth/*").permitAll()
                         .requestMatchers(HttpMethod.POST, "/admin/*").hasRole(UserRole.ORGANISATEUR.name())
                         .requestMatchers(HttpMethod.POST, "/admin/controleur/*").hasRole(UserRole.CONTROLEUR.name())
                         .anyRequest().authenticated())

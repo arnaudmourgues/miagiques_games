@@ -17,9 +17,11 @@ import java.util.List;
 
 @Service
 public class AuthService implements UserDetailsService {
-
-    @Autowired
     UserRespository repository;
+
+    public AuthService(UserRespository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) {

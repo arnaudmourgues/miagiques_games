@@ -7,7 +7,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/admin/delegation")
+@RequestMapping("/admin")
 public class DelegationController {
     private final DelegationService delegationService;
 
@@ -16,14 +16,12 @@ public class DelegationController {
     }
 
     @PostMapping("/createDelegation")
-    @PreAuthorize("hasRole('ROLE_ORGANISATEUR')")
     @ResponseStatus(HttpStatus.CREATED)
     public void createDelegation(@RequestBody Delegation delegation){
         delegationService.createDelegation(delegation);
     }
 
     @PostMapping("/deleteDelegation")
-    @PreAuthorize("hasRole('ROLE_ORGANISATEUR')")
     @ResponseStatus(HttpStatus.OK)
     public void deleteDelegation(@RequestBody Delegation delegation){
         delegationService.deleteDelegation(delegation);

@@ -18,28 +18,4 @@ public class OrganisateurController {
     public OrganisateurController(OrganisateurService organisateurService, AuthenticationManager authenticationManager, AuthService service, TokenProvider tokenService) {
         this.organisateurService = organisateurService;
     }
-
-    @PostMapping("/createByOrganisateur")
-    @ResponseStatus(HttpStatus.CREATED)
-    public void createByOrganisateur(@RequestBody SignUpDto data){
-        organisateurService.createByOrganisateur(data);
-    }
-
-    @PostMapping("/deleteUser")
-    @ResponseStatus(HttpStatus.OK)
-    public void deleteUser(@RequestBody UserDto user){
-        organisateurService.deleteUser(user);
-    }
-
-    @PostMapping("/createEpreuve")
-    @ResponseStatus(HttpStatus.CREATED)
-    public void createEpreuve(@RequestBody Epreuve epreuve){
-        organisateurService.createEpreuve(epreuve);
-    }
-
-    @PostMapping("/deleteEpreuve")
-    @ResponseStatus(HttpStatus.OK)
-    public void deleteEpreuve(@RequestBody Epreuve epreuve){
-        organisateurService.deleteEpreuve(epreuve);
-    }
 }

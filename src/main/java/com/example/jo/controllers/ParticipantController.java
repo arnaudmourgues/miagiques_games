@@ -14,7 +14,7 @@ public class ParticipantController {
         this.participantService = participantService;
     }
 
-    @PostMapping("/participant/inscrireEpreuve")
+    @PostMapping("/participant/epreuve")
     @ResponseStatus(HttpStatus.OK)
     public void inscrireEpreuve(@RequestBody Epreuve epreuve, @RequestBody Participant participant) {
         participantService.inscrireEpreuve(epreuve, participant);
