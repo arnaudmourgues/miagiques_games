@@ -2,6 +2,7 @@ package com.example.jo.services;
 
 import com.example.jo.entities.*;
 import com.example.jo.entities.DTOs.SignUpDto;
+import com.example.jo.entities.DTOs.SignUpParcipantDto;
 import com.example.jo.entities.DTOs.SignUpUserDto;
 import com.example.jo.entities.enums.UserRole;
 import com.example.jo.repositories.UserRespository;
@@ -13,12 +14,15 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 import static com.example.jo.entities.enums.UserRole.*;
 
 @Service
 @AllArgsConstructor
 public class AuthUserService implements UserDetailsService {
     UserRespository repository;
+    DelegationService delegationService;
 
     @Override
     public UserDetails loadUserByUsername(String username) {
@@ -34,7 +38,7 @@ public class AuthUserService implements UserDetailsService {
         repository.save(newUser);
     }
 
-    public void signUpByOrganisateur(SignUpDto data) {
+    public void signUpAdmin(SignUpDto data) {
         if (repository.findByUsernameOrEmail(data.login()) != null){
             throw new IllegalArgumentException("User already exists");
         }
@@ -43,9 +47,20 @@ public class AuthUserService implements UserDetailsService {
         switch (data.role()) {
             case "ORGANISATEUR" -> newUser = new Organisateur(data.login(), encryptedPassword, ORGANISATEUR);
             case "CONTROLEUR" -> newUser = new Controleur(data.login(), encryptedPassword, CONTROLEUR);
-            case "PARTICIPANT" -> newUser = new Participant(data.login(), encryptedPassword, PARTICIPANT);
-            default -> throw new IllegalArgumentException("Invalid role");
+            default -> throw new IllegalArgumentException("Rôle invalide.");
         }
+        repository.save(newUser);
+    }
+
+    public void signUpParticipant(SignUpParcipantDto data) {
+        if (repository.findByUsernameOrEmail(data.login()) != null) {
+            throw new IllegalArgumentException("L'utilisateur existe déjà");
+        }
+        if(!delegationService.isDelegationExist(data.delegationId())) {
+            throw new IllegalArgumentException("La délégation n'existe pas");
+        }
+        String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
+        Participant newUser = new Participant(data.login(), encryptedPassword, PARTICIPANT);
         repository.save(newUser);
     }
 
@@ -53,5 +68,14 @@ public class AuthUserService implements UserDetailsService {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserDetails user = loadUserByUsername(auth.getName());
         repository.delete((User) user);
+    }
+
+    public User getAuthenticatedUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return repository.findByUsernameOrEmail(auth.getName());
+    }
+
+    public void deleteUserById(UUID userId) {
+        repository.deleteById(userId);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.jo.errors;
 
+import com.example.jo.errors.exceptions.ForfeitException;
 import jakarta.persistence.EntityNotFoundException;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.core.Ordered;
@@ -77,6 +78,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleException(
             Exception ex) {
         ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR);
+        apiError.setMessage(ex.getMessage());
+        return buildResponseEntity(apiError);
+    }
+
+    @ExceptionHandler(ForfeitException.class)
+    protected ResponseEntity<Object> handleForfeitException(
+            ForfeitException ex) {
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
         apiError.setMessage(ex.getMessage());
         return buildResponseEntity(apiError);
     }

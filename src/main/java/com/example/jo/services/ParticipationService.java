@@ -28,6 +28,10 @@ public class ParticipationService {
         return participationRepository.findAllByEpreuve(epreuve);
     }
 
+    public int getNbParticipantsByEpreuve(Epreuve epreuve) {
+        return getParticipantsByEpreuve(epreuve).size();
+    }
+
     public boolean isParticipantInEpreuve(Participant participant, Epreuve epreuve) {
         return participationRepository.findByParticipantAndEpreuve(participant, epreuve) !=null;
     }

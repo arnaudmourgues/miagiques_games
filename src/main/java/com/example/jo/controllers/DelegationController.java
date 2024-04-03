@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/admin")
 @AllArgsConstructor
@@ -25,7 +27,7 @@ public class DelegationController {
 
     @PostMapping("/deleteDelegation")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteDelegation(@RequestBody DelegationDto delegation){
-        delegationService.deleteDelegation(modelMapper.map(delegation, Delegation.class));
+    public void deleteDelegation(@RequestBody UUID delegationId){
+        delegationService.deleteDelegation(delegationId);
     }
 }

@@ -3,8 +3,8 @@ package com.example.jo.entities.DTOs;
 import java.util.UUID;
 
 public record SignUpParcipantDto(
-        String username,
+        String login,
         String password,
-        UUID delegation
+        UUID delegationId
 ) {
 }

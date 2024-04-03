@@ -1,10 +1,7 @@
 package com.example.jo.controllers;
 
 import com.example.jo.config.auth.TokenProvider;
-import com.example.jo.entities.DTOs.JwtDto;
-import com.example.jo.entities.DTOs.SignInDto;
-import com.example.jo.entities.DTOs.SignUpDto;
-import com.example.jo.entities.DTOs.SignUpUserDto;
+import com.example.jo.entities.DTOs.*;
 import com.example.jo.entities.User;
 import com.example.jo.services.AuthUserService;
 import lombok.AllArgsConstructor;
@@ -15,6 +12,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/auth")
@@ -30,11 +29,20 @@ public class AuthUserController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PostMapping("/signup/organisateur")
+    @PostMapping("/signup/admin")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<?> signUpByOrganisateur(@RequestBody SignUpDto data) {
+    public ResponseEntity<?> signUpAdmin(@RequestBody SignUpDto data) {
         System.out.println(data);
-        service.signUpByOrganisateur(data);
+        service.signUpAdmin(data);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PostMapping("/signup/participant")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<?> signUpParticipant(@RequestBody SignUpParcipantDto data) {
+        service.signUpParticipant(data);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -55,18 +63,16 @@ public class AuthUserController {
     }
 
     @PostMapping("/delete/organisateur")
+    @PreAuthorize("hasRole('ROLE_ORGANISATEUR')")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> deleteByOrganisateur() {
-        service.deleteUser();
+    public ResponseEntity<HttpStatus> deleteByOrganisateur(@RequestBody UUID userId) {
+        service.deleteUserById(userId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @GetMapping("/account")
     public ResponseEntity<?> getAccount() {
-        //get role of the user
-        System.out.println(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
         var user = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(user);
         return ResponseEntity.ok(user);
     }
 }
