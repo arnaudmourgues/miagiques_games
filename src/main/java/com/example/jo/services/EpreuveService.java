@@ -1,33 +1,27 @@
 package com.example.jo.services;
 
+import com.example.jo.entities.DTOs.EpreuveDto;
+import com.example.jo.entities.DTOs.UpdateEpreuveDto;
 import com.example.jo.entities.Epreuve;
+import com.example.jo.entities.InfrastructureSportive;
 import com.example.jo.entities.Participant;
-import com.example.jo.entities.User;
 import com.example.jo.entities.enums.Status;
 import com.example.jo.errors.exceptions.ForfeitException;
 import com.example.jo.repositories.EpreuveRepository;
+import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.UUID;
 
 @Service
+@AllArgsConstructor
 public class EpreuveService {
     private final EpreuveRepository epreuveRepository;
     private final ParticipationService participationService;
     private final AuthUserService authUserService;
-
-    public EpreuveService(EpreuveRepository epreuveRepository, ParticipationService participationService, AuthUserService authUserService) {
-        this.epreuveRepository = epreuveRepository;
-        this.participationService = participationService;
-        this.authUserService = authUserService;
-    }
-
-    public void createEpreuve(Epreuve epreuve) {
-        epreuveRepository.save(epreuve);
-    }
+    private final InfrastructureSportiveService infrastructureSportiveService;
 
     public void deleteEpreuve(UUID epreuveId) {
         epreuveRepository.deleteById(epreuveId);
@@ -65,7 +59,34 @@ public class EpreuveService {
         }
     }
 
-    public Epreuve getEpreuveById(UUID epreuveid) {
+    public Epreuve getEpreuveById(@NotNull UUID epreuveid) {
         return epreuveRepository.findById(epreuveid).orElseThrow(() -> new IllegalArgumentException("L'épreuve n'existe pas."));
+    }
+
+    public void createEpreuve(@NotNull EpreuveDto data) {
+        InfrastructureSportive infrastructureSportive =
+                infrastructureSportiveService.getInfrastructureSportiveById(data.infrastructureSportiveId());
+        if(infrastructureSportive == null) {
+            throw new IllegalArgumentException("L'infrastructure sportive n'existe pas.");
+        }
+        if(data.nbPlacesSpectateurs() > infrastructureSportive.getCapacite()) {
+            throw new IllegalArgumentException("Le nombre de places spectatrices est supérieur à celui de l'infrastructure sportive.");
+        }
+        Epreuve epreuve = new Epreuve();
+        epreuve.setNom(data.nom());
+        epreuve.setDate(data.date());
+        epreuve.setNbPlacesParticipants(data.nbPlacesParticipants());
+        epreuve.setNbPlacesSpectateurs(data.nbPlacesSpectateurs());
+        epreuve.setInfrastructureSportive(infrastructureSportive);
+        epreuveRepository.save(epreuve);
+    }
+
+    public void updateEpreuve(UpdateEpreuveDto data) {
+        Epreuve epreuve = getEpreuveById(data.id());
+        epreuve.setNom(data.epreuve().nom());
+        epreuve.setDate(data.epreuve().date());
+        epreuve.setNbPlacesParticipants(data.epreuve().nbPlacesParticipants());
+        epreuve.setNbPlacesSpectateurs(data.epreuve().nbPlacesSpectateurs());
+        epreuveRepository.save(epreuve);
     }
 }

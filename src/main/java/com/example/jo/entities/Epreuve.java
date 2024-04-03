@@ -1,18 +1,20 @@
 package com.example.jo.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Instant;
-import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(name = "epreuves")
 @Setter
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Epreuve {
     @Id
     @GeneratedValue

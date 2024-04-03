@@ -5,6 +5,7 @@ import com.example.jo.services.BilletService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -28,6 +29,7 @@ public class BilletController {
     }
 
     @PostMapping("/controlBillet")
+    @PreAuthorize("hasRole('ROLE_CONTROLEUR')")
     public ResponseEntity<Void> controlBillet(@RequestBody UUID billetId) {
         if(billetService.controlBillet(billetId)) {
             return ResponseEntity.ok().build();

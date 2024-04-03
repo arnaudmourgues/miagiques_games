@@ -5,12 +5,12 @@ import com.example.jo.entities.Participant;
 import com.example.jo.entities.Participation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.UUID;
 
-@Service
+@Repository
 public interface ParticipationRepository extends JpaRepository<Participation, UUID> {
     @Query("SELECT p FROM Participation p WHERE p.epreuve = ?1")
     List<Participation> findAllByEpreuve(Epreuve epreuve);
