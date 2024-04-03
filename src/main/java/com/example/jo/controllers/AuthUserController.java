@@ -30,7 +30,7 @@ public class AuthUserController {
     }
 
     @PostMapping("/signup/admin")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ORGANISATEUR')")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> signUpAdmin(@RequestBody SignUpDto data) {
         System.out.println(data);
@@ -39,7 +39,7 @@ public class AuthUserController {
     }
 
     @PostMapping("/signup/participant")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ORGANISATEUR')")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> signUpParticipant(@RequestBody SignUpParcipantDto data) {
         service.signUpParticipant(data);
