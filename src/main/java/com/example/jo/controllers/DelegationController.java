@@ -31,4 +31,9 @@ public class DelegationController {
     public void deleteDelegation(@RequestBody UUID delegationId){
         delegationService.deleteDelegation(delegationId);
     }
+
+    @GetMapping("/getClassmentDelegation")
+    public Iterable<Delegation> getClassmentDelegation(){
+        return delegationService.findAllDelegationOrderByMedals();
+    }
 }

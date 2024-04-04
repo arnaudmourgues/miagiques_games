@@ -1,11 +1,15 @@
 package com.example.jo.entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.UUID;
 
 @Entity
-@Table(name = "delegation")
+@Table(name = "delegations")
+@Setter
+@Getter
 public class Delegation {
     @Id
     @GeneratedValue
@@ -15,5 +19,4 @@ public class Delegation {
     private int nbMedaillesOr;
     private int nbMedaillesArgent;
     private int nbMedaillesBronze;
-
 }
