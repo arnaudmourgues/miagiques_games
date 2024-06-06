@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
-@Controller
+@RestController
 @AllArgsConstructor
 public class EpreuveController {
     private final EpreuveService epreuveService;
@@ -47,6 +47,7 @@ public class EpreuveController {
     }
 
     @GetMapping("/getAllEpreuves")
+    @CrossOrigin
     public Iterable<Epreuve> getAllEpreuves() {
         return epreuveService.getAllEpreuves();
     }

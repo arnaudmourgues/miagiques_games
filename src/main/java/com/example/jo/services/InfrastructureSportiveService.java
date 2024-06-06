@@ -17,7 +17,7 @@ public class InfrastructureSportiveService {
         InfrastructureSportive infrastructureSportive = new InfrastructureSportive();
         infrastructureSportive.setNom(data.nom());
         infrastructureSportive.setAdresse(data.adresse());
-        infrastructureSportive.setCapacite(data.capacite());
+        infrastructureSportive.setCapacite(Integer.parseInt(data.capacite()));
         infrastructureSportiveRepository.save(infrastructureSportive);
     }
 

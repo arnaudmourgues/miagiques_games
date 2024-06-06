@@ -4,6 +4,7 @@ import com.example.jo.config.auth.TokenProvider;
 import com.example.jo.entities.DTOs.*;
 import com.example.jo.entities.User;
 import com.example.jo.services.AuthUserService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -18,6 +20,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/auth")
 @AllArgsConstructor
+@CrossOrigin
 public class AuthUserController {
     private AuthenticationManager authenticationManager;
     private AuthUserService service;
@@ -33,7 +36,6 @@ public class AuthUserController {
     @PreAuthorize("hasRole('ROLE_ORGANISATEUR')")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> signUpAdmin(@RequestBody SignUpDto data) {
-        System.out.println(data);
         service.signUpAdmin(data);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -49,6 +51,10 @@ public class AuthUserController {
     @PostMapping("/signin")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<JwtDto> signIn(@RequestBody SignInDto data) {
+        UserDetails newUser = service.loadUserByUsername(data.login());
+        if(newUser == null) {
+            throw new EntityNotFoundException("Le nom d'utilisateur ou le mot de passe est incorrect.");
+        }
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
         var authUser = authenticationManager.authenticate(usernamePassword);
         var accessToken = tokenService.generateAccessToken((User) authUser.getPrincipal());
