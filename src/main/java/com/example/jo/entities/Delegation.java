@@ -1,7 +1,9 @@
 package com.example.jo.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.UUID;
@@ -10,6 +12,8 @@ import java.util.UUID;
 @Table(name = "delegations")
 @Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Delegation {
     @Id
     @GeneratedValue
@@ -19,4 +23,11 @@ public class Delegation {
     private int nbMedaillesOr;
     private int nbMedaillesArgent;
     private int nbMedaillesBronze;
+
+    public Delegation(String nom) {
+        this.nom = nom;
+        this.nbMedaillesOr = 0;
+        this.nbMedaillesArgent = 0;
+        this.nbMedaillesBronze = 0;
+    }
 }

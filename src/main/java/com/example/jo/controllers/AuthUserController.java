@@ -1,18 +1,12 @@
 package com.example.jo.controllers;
 
-import com.example.jo.config.auth.TokenProvider;
 import com.example.jo.entities.DTOs.*;
-import com.example.jo.entities.User;
 import com.example.jo.services.AuthUserService;
-import jakarta.persistence.EntityNotFoundException;
+import com.example.jo.services.AuthUserSubService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -22,14 +16,12 @@ import java.util.UUID;
 @AllArgsConstructor
 @CrossOrigin
 public class AuthUserController {
-    private AuthenticationManager authenticationManager;
     private AuthUserService service;
-    private TokenProvider tokenService;
+    private AuthUserSubService subService;
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signUp(@RequestBody SignUpUserDto data) {
-        service.signUpSpectateur(data);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<JwtDto> signUp(@RequestBody SignInDto data) {
+        return ResponseEntity.ok(subService.signUpSpectateur(data));
     }
 
     @PostMapping("/signup/admin")
@@ -51,34 +43,29 @@ public class AuthUserController {
     @PostMapping("/signin")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<JwtDto> signIn(@RequestBody SignInDto data) {
-        UserDetails newUser = service.loadUserByUsername(data.login());
-        if(newUser == null) {
-            throw new EntityNotFoundException("L'utilisateur n'existe pas");
-        }
-        var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
-        var authUser = authenticationManager.authenticate(usernamePassword);
-        var accessToken = tokenService.generateAccessToken((User) authUser.getPrincipal());
-        return ResponseEntity.ok(new JwtDto(accessToken));
+        return ResponseEntity.ok(subService.signIn(data));
     }
 
-    @DeleteMapping("/account/delete")
+    @GetMapping("/signout")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<?> signOut() {
+        service.signOut();
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @DeleteMapping("/account")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> delete() {
+        //get the user sent in the header
         service.deleteUser();
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @PostMapping("/delete/organisateur")
+    @DeleteMapping("/admin/{userId}")
     @PreAuthorize("hasRole('ROLE_ORGANISATEUR')")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<HttpStatus> deleteByOrganisateur(@RequestBody UUID userId) {
+    public ResponseEntity<HttpStatus> deleteByOrganisateur(@RequestParam UUID userId) {
         service.deleteUserById(userId);
         return ResponseEntity.status(HttpStatus.OK).build();
-    }
-
-    @GetMapping("/account")
-    public ResponseEntity<?> getAccount() {
-        var user = SecurityContextHolder.getContext().getAuthentication();
-        return ResponseEntity.ok(user);
     }
 }

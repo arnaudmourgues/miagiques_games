@@ -4,10 +4,13 @@ import com.example.jo.entities.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
+import java.util.UUID;
 
 @Getter
+@Setter
 @Entity
 @NoArgsConstructor
 public class Participant extends User {
@@ -19,8 +22,13 @@ public class Participant extends User {
         super(login, encryptedPassword, userRole);
     }
 
-    public void setDelegation(Delegation delegation) {
+    public Participant(String login, String encryptedPassword, Delegation delegation, String nom, String prenom) {
+        super(login, encryptedPassword, UserRole.PARTICIPANT, nom, prenom);
         this.delegation = delegation;
     }
 
+    @Override
+    public String getUsername() {
+        return getEmail();
+    }
 }

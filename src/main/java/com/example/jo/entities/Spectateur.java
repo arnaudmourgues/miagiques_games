@@ -12,4 +12,9 @@ public class Spectateur extends User {
     public Spectateur() {
 
     }
+
+    @Override
+    public String getUsername() {
+        return getEmail();
+    }
 }

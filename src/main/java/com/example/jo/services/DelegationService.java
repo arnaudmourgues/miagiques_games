@@ -1,5 +1,6 @@
 package com.example.jo.services;
 
+import com.example.jo.entities.DTOs.DelegationDto;
 import com.example.jo.entities.Delegation;
 import com.example.jo.repositories.DelegationRepository;
 import org.springframework.stereotype.Service;
@@ -15,8 +16,9 @@ public class DelegationService {
         this.delegationRepository = delegationRepository;
     }
 
-    public void createDelegation(Delegation delegation){
-        delegationRepository.save(delegation);
+    public void createDelegation(DelegationDto delegation){
+        Delegation newDelegation = new Delegation(delegation.nom());
+        delegationRepository.save(newDelegation);
     }
 
     public void deleteDelegation(UUID delegationId) {
@@ -43,5 +45,9 @@ public class DelegationService {
 
     public Iterable<Delegation> findAllDelegation() {
         return delegationRepository.findAll();
+    }
+
+    public Delegation getDelegationById(UUID uuid) {
+        return delegationRepository.findById(uuid).orElse(null);
     }
 }

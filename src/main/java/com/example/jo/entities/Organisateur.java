@@ -12,4 +12,9 @@ public class Organisateur extends User {
     public Organisateur() {
 
     }
+
+    @Override
+    public String getUsername() {
+        return getEmail();
+    }
 }

@@ -13,4 +13,9 @@ public class Controleur extends User {
     public Controleur() {
 
     }
+
+    @Override
+    public String getUsername() {
+        return getEmail();
+    }
 }
