@@ -6,15 +6,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-import java.util.UUID;
-
 @Getter
 @Setter
 @Entity
 @NoArgsConstructor
 public class Participant extends User {
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "id_delegation", referencedColumnName = "id")
     private Delegation delegation;
 

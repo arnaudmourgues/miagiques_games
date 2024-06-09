@@ -47,6 +47,7 @@ public class AuthUserService implements UserDetailsService {
         if(!delegationService.isDelegationExist(UUID.fromString(data.delegationid()))) {
             throw new IllegalArgumentException("La délégation n'existe pas");
         }
+        System.out.println("Creating new participant with first name: " + data.prenom());
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
         Delegation delegation = delegationService.getDelegationById(UUID.fromString(data.delegationid()));
         Participant newUser = new Participant(data.email(), encryptedPassword, delegation, data.nom(), data.prenom());
@@ -64,8 +65,8 @@ public class AuthUserService implements UserDetailsService {
         return (User) repository.findByEmail(auth.getName());
     }
 
-    public void deleteUserById(UUID userId) {
-        repository.deleteById(userId);
+    public void deleteUserById(String userId) {
+        repository.deleteById(UUID.fromString(userId));
     }
 
     public void signOut() {

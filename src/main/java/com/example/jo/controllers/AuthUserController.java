@@ -9,8 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
-
 @RestController
 @RequestMapping("/auth")
 @AllArgsConstructor
@@ -64,7 +62,7 @@ public class AuthUserController {
     @DeleteMapping("/admin/{userId}")
     @PreAuthorize("hasRole('ROLE_ORGANISATEUR')")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<HttpStatus> deleteByOrganisateur(@RequestParam UUID userId) {
+    public ResponseEntity<HttpStatus> deleteByOrganisateur(@PathVariable String userId) {
         service.deleteUserById(userId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
