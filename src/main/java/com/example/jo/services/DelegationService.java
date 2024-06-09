@@ -4,6 +4,7 @@ import com.example.jo.entities.Delegation;
 import com.example.jo.repositories.DelegationRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -38,5 +39,9 @@ public class DelegationService {
 
     public Iterable<Delegation> findAllDelegationOrderByMedals() {
         return delegationRepository.findAllByOrderByNbMedaillesOrDescNbMedaillesArgentDescNbMedaillesBronzeDesc();
+    }
+
+    public Iterable<Delegation> findAllDelegation() {
+        return delegationRepository.findAll();
     }
 }

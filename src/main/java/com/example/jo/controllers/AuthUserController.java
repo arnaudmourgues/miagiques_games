@@ -53,7 +53,7 @@ public class AuthUserController {
     public ResponseEntity<JwtDto> signIn(@RequestBody SignInDto data) {
         UserDetails newUser = service.loadUserByUsername(data.login());
         if(newUser == null) {
-            throw new EntityNotFoundException("Le nom d'utilisateur ou le mot de passe est incorrect.");
+            throw new EntityNotFoundException("L'utilisateur n'existe pas");
         }
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
         var authUser = authenticationManager.authenticate(usernamePassword);

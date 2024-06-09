@@ -77,8 +77,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<Object> handleException(
             Exception ex) {
-        ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR);
-        apiError.setMessage(ex.getMessage());
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
+        if(ex.getMessage().contains("identifications")){
+            apiError.setMessage("Le mot de passe est incorrect.");
+        }
         return buildResponseEntity(apiError);
     }
 
