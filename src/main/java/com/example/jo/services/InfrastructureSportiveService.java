@@ -28,4 +28,8 @@ public class InfrastructureSportiveService {
     public InfrastructureSportive getInfrastructureSportiveById(UUID infrastructureSportiveId) {
         return infrastructureSportiveRepository.findById(infrastructureSportiveId).orElse(null);
     }
+
+    public Iterable<InfrastructureSportive> getAllInfrastructureSportive() {
+        return infrastructureSportiveRepository.findAll();
+    }
 }

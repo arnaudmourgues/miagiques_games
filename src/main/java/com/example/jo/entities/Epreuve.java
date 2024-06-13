@@ -23,7 +23,7 @@ public class Epreuve {
     private String nom;
     @Column(nullable = false)
     private Instant date;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "id_infrastructure_sportive", referencedColumnName = "id", nullable = false)
     private InfrastructureSportive infrastructureSportive;
     @Column(nullable = false)

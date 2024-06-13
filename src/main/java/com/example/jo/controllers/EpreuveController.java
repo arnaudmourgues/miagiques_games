@@ -6,29 +6,29 @@ import com.example.jo.entities.Epreuve;
 import com.example.jo.services.EpreuveService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
 @RestController
 @AllArgsConstructor
+@CrossOrigin
 public class EpreuveController {
     private final EpreuveService epreuveService;
 
-    @PostMapping("/admin/createEpreuve")
+    @PostMapping("/admin/epreuve")
     @PreAuthorize("hasRole('ROLE_ORGANISATEUR')")
     public void createEpreuve(@RequestBody EpreuveDto data) {
         epreuveService.createEpreuve(data);
     }
 
-    @DeleteMapping("/admin/deleteEpreuve")
+    @DeleteMapping("/admin/epreuve/{epreuveId}")
     @PreAuthorize("hasRole('ROLE_ORGANISATEUR')")
-    public void deleteEpreuve(@RequestBody UUID epreuveId) {
-        epreuveService.deleteEpreuve(epreuveId);
+    public void deleteEpreuve(@PathVariable String epreuveId) {
+        epreuveService.deleteEpreuve(UUID.fromString(epreuveId));
     }
 
-    @PutMapping("/admin/updateEpreuve")
+    @PutMapping("/admin/epreuve")
     @PreAuthorize("hasRole('ROLE_ORGANISATEUR')")
     public void updateEpreuve(@RequestBody UpdateEpreuveDto data) {
         epreuveService.updateEpreuve(data);
@@ -46,8 +46,7 @@ public class EpreuveController {
         epreuveService.desinscrireEpreuve(epreuveId);
     }
 
-    @GetMapping("/getAllEpreuves")
-    @CrossOrigin
+    @GetMapping("/epreuve")
     public Iterable<Epreuve> getAllEpreuves() {
         return epreuveService.getAllEpreuves();
     }
