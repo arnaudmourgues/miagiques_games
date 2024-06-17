@@ -33,18 +33,6 @@ public class EpreuveController {
         epreuveService.updateEpreuve(data, UUID.fromString(epreuveId));
     }
 
-    @PostMapping("/participation/inscrireEpreuve")
-    @PreAuthorize("hasRole('ROLE_PARTICIPANT')")
-    public void inscrireEpreuve(@RequestBody UUID epreuveId) {
-        epreuveService.inscrireEpreuve(epreuveId);
-    }
-
-    @DeleteMapping("/participation/desinscrireEpreuve")
-    @PreAuthorize("hasRole('ROLE_PARTICIPANT')")
-    public void desinscrireEpreuve(@RequestBody UUID epreuveId) {
-        epreuveService.desinscrireEpreuve(epreuveId);
-    }
-
     @GetMapping("/epreuve")
     public Iterable<Epreuve> getAllEpreuves() {
         return epreuveService.getAllEpreuves();

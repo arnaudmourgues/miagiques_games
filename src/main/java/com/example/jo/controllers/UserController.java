@@ -1,5 +1,6 @@
 package com.example.jo.controllers;
 
+import com.example.jo.entities.Participant;
 import com.example.jo.services.AuthUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -13,7 +14,7 @@ public class UserController {
     private AuthUserService userService;
 
     @GetMapping("/participants")
-    public Iterable<?> getParticipants() {
+    public Iterable<Participant> getParticipants() {
         return userService.getParticipants();
     }
 

@@ -1,6 +1,8 @@
 package com.example.jo.entities;
 
 import com.example.jo.entities.enums.UserRole;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,8 +13,9 @@ import lombok.Setter;
 @Entity
 @NoArgsConstructor
 public class Participant extends User {
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_delegation", referencedColumnName = "id")
+    @JsonBackReference
     private Delegation delegation;
 
     public Participant(String login, String encryptedPassword, UserRole userRole) {
