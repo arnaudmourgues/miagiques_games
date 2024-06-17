@@ -11,7 +11,7 @@ import lombok.Setter;
 @Entity
 @NoArgsConstructor
 public class Participant extends User {
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "id_delegation", referencedColumnName = "id")
     private Delegation delegation;
 
@@ -20,7 +20,7 @@ public class Participant extends User {
     }
 
     public Participant(String login, String encryptedPassword, Delegation delegation, String nom, String prenom) {
-        super(login, encryptedPassword, UserRole.PARTICIPANT, nom, prenom);
+        super(login, encryptedPassword, nom, prenom, UserRole.PARTICIPANT);
         this.delegation = delegation;
     }
 

@@ -41,7 +41,7 @@ public abstract class User implements UserDetails {
         this.role = role;
     }
 
-    public User(String login, String encryptedPassword, UserRole userRole, String nom, String prenom) {
+    public User(String login, String encryptedPassword, String nom, String prenom, UserRole userRole) {
         this.email = login;
         this.password = encryptedPassword;
         this.role = userRole;

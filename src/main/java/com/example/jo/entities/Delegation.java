@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -23,6 +24,8 @@ public class Delegation {
     private int nbMedaillesOr;
     private int nbMedaillesArgent;
     private int nbMedaillesBronze;
+    @OneToMany(mappedBy = "delegation", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Participant> participants;
 
     public Delegation(String nom) {
         this.nom = nom;

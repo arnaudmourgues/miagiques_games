@@ -1,7 +1,6 @@
 package com.example.jo.services;
 
 import com.example.jo.entities.DTOs.EpreuveDto;
-import com.example.jo.entities.DTOs.UpdateEpreuveDto;
 import com.example.jo.entities.Epreuve;
 import com.example.jo.entities.InfrastructureSportive;
 import com.example.jo.entities.Participant;
@@ -13,6 +12,9 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.UUID;
 
 @Service
@@ -65,28 +67,33 @@ public class EpreuveService {
 
     public void createEpreuve(@NotNull EpreuveDto data) {
         InfrastructureSportive infrastructureSportive =
-                infrastructureSportiveService.getInfrastructureSportiveById(data.infrastructureSportiveId());
+                infrastructureSportiveService.getInfrastructureSportiveById(UUID.fromString(data.infrastructureSportiveId()));
         if(infrastructureSportive == null) {
             throw new IllegalArgumentException("L'infrastructure sportive n'existe pas.");
         }
         if(data.nbPlacesSpectateurs() > infrastructureSportive.getCapacite()) {
             throw new IllegalArgumentException("Le nombre de places spectatrices est supérieur à celui de l'infrastructure sportive.");
         }
+        Instant i = new Date(data.date().year() - 1900, data.date().month()-1, data.date().day(), data.date().hour(), data.date().minute(), 0).toInstant();
         Epreuve epreuve = new Epreuve();
         epreuve.setNom(data.nom());
-        epreuve.setDate(data.date());
+        epreuve.setDate(i);
         epreuve.setNbPlacesParticipants(data.nbPlacesParticipants());
         epreuve.setNbPlacesSpectateurs(data.nbPlacesSpectateurs());
         epreuve.setInfrastructureSportive(infrastructureSportive);
         epreuveRepository.save(epreuve);
     }
 
-    public void updateEpreuve(UpdateEpreuveDto data) {
-        Epreuve epreuve = getEpreuveById(data.id());
-        epreuve.setNom(data.epreuve().nom());
-        epreuve.setDate(data.epreuve().date());
-        epreuve.setNbPlacesParticipants(data.epreuve().nbPlacesParticipants());
-        epreuve.setNbPlacesSpectateurs(data.epreuve().nbPlacesSpectateurs());
+    public void updateEpreuve(EpreuveDto data, UUID uuid) {
+        Date date = new Date(data.date().year() - 1900, data.date().month()-1, data.date().day(), data.date().hour(), data.date().minute(), 0);
+        System.out.println(date);
+        Instant i = date.toInstant();
+        System.out.println(i);
+        Epreuve epreuve = getEpreuveById(uuid);
+        epreuve.setNom(data.nom());
+        epreuve.setDate(i);
+        epreuve.setNbPlacesParticipants(data.nbPlacesParticipants());
+        epreuve.setNbPlacesSpectateurs(data.nbPlacesSpectateurs());
         epreuveRepository.save(epreuve);
     }
 }

@@ -1,7 +1,6 @@
 package com.example.jo.controllers;
 
 import com.example.jo.entities.DTOs.EpreuveDto;
-import com.example.jo.entities.DTOs.UpdateEpreuveDto;
 import com.example.jo.entities.Epreuve;
 import com.example.jo.services.EpreuveService;
 import lombok.AllArgsConstructor;
@@ -28,10 +27,10 @@ public class EpreuveController {
         epreuveService.deleteEpreuve(UUID.fromString(epreuveId));
     }
 
-    @PutMapping("/admin/epreuve")
+    @PutMapping("/admin/epreuve/{epreuveId}")
     @PreAuthorize("hasRole('ROLE_ORGANISATEUR')")
-    public void updateEpreuve(@RequestBody UpdateEpreuveDto data) {
-        epreuveService.updateEpreuve(data);
+    public void updateEpreuve(@RequestBody EpreuveDto data, @PathVariable String epreuveId) {
+        epreuveService.updateEpreuve(data, UUID.fromString(epreuveId));
     }
 
     @PostMapping("/participation/inscrireEpreuve")

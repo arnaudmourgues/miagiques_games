@@ -18,7 +18,7 @@ public class AuthUserController {
     private AuthUserSubService subService;
 
     @PostMapping("/signup")
-    public ResponseEntity<JwtDto> signUp(@RequestBody SignInDto data) {
+    public ResponseEntity<JwtDto> signUp(@RequestBody SignUpUserDto data) {
         return ResponseEntity.ok(subService.signUpSpectateur(data));
     }
 

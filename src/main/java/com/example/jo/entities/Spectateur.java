@@ -13,6 +13,10 @@ public class Spectateur extends User {
 
     }
 
+    public Spectateur(String email, String encryptedPassword, String nom, String prenom, UserRole userRole) {
+        super(email, encryptedPassword, nom, prenom, userRole);
+    }
+
     @Override
     public String getUsername() {
         return getEmail();

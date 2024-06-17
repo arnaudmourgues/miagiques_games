@@ -5,8 +5,8 @@ import java.util.UUID;
 
 public record EpreuveDto(
         String nom,
-        Instant date,
-        UUID infrastructureSportiveId,
+        DateDto date,
+        String infrastructureSportiveId,
         int nbPlacesSpectateurs,
         int nbPlacesParticipants
 ) {

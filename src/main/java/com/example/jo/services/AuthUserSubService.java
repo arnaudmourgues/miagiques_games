@@ -3,6 +3,8 @@ package com.example.jo.services;
 import com.example.jo.config.auth.TokenProvider;
 import com.example.jo.entities.DTOs.JwtDto;
 import com.example.jo.entities.DTOs.SignInDto;
+import com.example.jo.entities.DTOs.SignUpDto;
+import com.example.jo.entities.DTOs.SignUpUserDto;
 import com.example.jo.entities.Spectateur;
 import com.example.jo.entities.User;
 import com.example.jo.entities.enums.UserRole;
@@ -36,13 +38,13 @@ public class AuthUserSubService {
         return generateJwtToken(data);
     }
 
-    public JwtDto signUpSpectateur(SignInDto data) {
-        if(repository.findByEmail(data.login()) != null) {
+    public JwtDto signUpSpectateur(SignUpUserDto data) {
+        if(repository.findByEmail(data.email()) != null) {
             throw new IllegalArgumentException("Le nom d'utilisateur est déjà pris");
         }
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
-        Spectateur newUser = new Spectateur(data.login(), encryptedPassword, UserRole.SPECTATEUR);
+        Spectateur newUser = new Spectateur(data.email(), encryptedPassword, data.nom(), data.prenom(), UserRole.SPECTATEUR);
         repository.save(newUser);
-        return generateJwtToken(data);
+        return generateJwtToken(new SignInDto(data.email(), data.password()));
     }
 }

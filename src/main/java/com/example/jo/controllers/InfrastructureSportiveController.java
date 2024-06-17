@@ -15,17 +15,17 @@ import java.util.UUID;
 public class InfrastructureSportiveController {
     private final InfrastructureSportiveService infrastructureSportiveService;
 
-    @PostMapping("/admin/createInfrastructureSportive")
+    @PostMapping("/admin/infrastructureSportive")
     @PreAuthorize("hasRole('ROLE_ORGANISATEUR')")
     public void createInfrastructureSportive(@RequestBody InfrastructureSportiveDto data) {
         System.out.println("data" + data);
         infrastructureSportiveService.createInfrastructureSportive(data);
     }
 
-    @PostMapping("/admin/deleteInfrastructureSportive")
+    @DeleteMapping("/admin/infrastructureSportive/{infrastructureSportiveId}")
     @PreAuthorize("hasRole('ROLE_ORGANISATEUR')")
-    public void deleteInfrastructureSportive(UUID infrastructureSportiveId) {
-        infrastructureSportiveService.deleteInfrastructureSportive(infrastructureSportiveId);
+    public void deleteInfrastructureSportive(@PathVariable String infrastructureSportiveId) {
+        infrastructureSportiveService.deleteInfrastructureSportive(UUID.fromString(infrastructureSportiveId));
     }
 
     @GetMapping("/infrastructureSportive")
