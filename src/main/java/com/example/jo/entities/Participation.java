@@ -1,6 +1,7 @@
 package com.example.jo.entities;
 
 import com.example.jo.entities.enums.Status;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,7 +23,8 @@ public class Participation {
     @ManyToOne
     @JoinColumn(name = "id_epreuve", referencedColumnName = "id", nullable = false)
     private Epreuve epreuve;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "id_participant", referencedColumnName = "id", nullable = false)
+    @JsonBackReference
     private Participant participant;
 }

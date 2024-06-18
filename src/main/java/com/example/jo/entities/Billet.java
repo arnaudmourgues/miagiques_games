@@ -15,10 +15,10 @@ public class Billet {
     @Id
     @GeneratedValue
     private UUID id;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "id_epreuve", referencedColumnName = "id", nullable = false)
     private Epreuve epreuve;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "id_spectateur", referencedColumnName = "id", nullable = false)
     private User spectateur;
     @Column(nullable = false)

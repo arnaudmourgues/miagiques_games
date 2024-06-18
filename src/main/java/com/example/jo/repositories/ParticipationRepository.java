@@ -16,4 +16,6 @@ public interface ParticipationRepository extends JpaRepository<Participation, UU
     List<Participation> findAllByEpreuve(Epreuve epreuve);
     @Query("SELECT p FROM Participation p WHERE p.participant = ?1 AND p.epreuve = ?2")
     Participation findByParticipantAndEpreuve(Participant participant, Epreuve epreuve);
+
+    Iterable<Participation> findAllByParticipant(Participant participant);
 }

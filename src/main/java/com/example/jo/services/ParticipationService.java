@@ -6,6 +6,7 @@ import com.example.jo.entities.Participation;
 import com.example.jo.entities.enums.Status;
 import com.example.jo.errors.exceptions.ForfeitException;
 import com.example.jo.repositories.ParticipationRepository;
+import jakarta.servlet.http.Part;
 import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
@@ -40,20 +41,12 @@ public class ParticipationService {
     }
 
     public void deleteParticipation(@NotNull UUID epreuveId) {
-        Epreuve epreuve = epreuveService.getEpreuveById(epreuveId);
-        Participant participant = (Participant) authUserService.getAuthenticatedUser();
-        if (!isParticipantInEpreuve(participant, epreuve)) {
-            throw new IllegalArgumentException("Le participant ne participe pas à l'épreuve.");
-        } else if (epreuve.getDate().isBefore(Instant.now().plusSeconds(10 * 24 * 60 * 60))) {
-            updateStatus(participant, epreuve, Status.FORFAIT);
+        Participation participation = participationRepository.findById(epreuveId).get();
+        if (participation.getEpreuve().getDate().isBefore(Instant.now().plusSeconds(10 * 24 * 60 * 60))) {
+            updateStatus(participation, Status.FORFAIT);
             throw new ForfeitException("L'épreuve est dans moins de 10 jours, vous êtes forfait pour l'épreuve.");
-        } else {
-            Participation participation = participationRepository.findByParticipantAndEpreuve(participant, epreuve);
-            if(participation == null) {
-                throw new IllegalArgumentException("La participation n'existe pas");
-            }
-            participationRepository.delete(participation);
         }
+        participationRepository.delete(participation);
     }
 
     public List<Participation> getParticipantsByEpreuve(UUID epreuveId) {
@@ -65,9 +58,13 @@ public class ParticipationService {
         return participationRepository.findByParticipantAndEpreuve(participant, epreuve) != null;
     }
 
-    public void updateStatus(Participant participant, Epreuve epreuve, Status status) {
-        Participation participation = participationRepository.findByParticipantAndEpreuve(participant, epreuve);
-        participation.setStatus(status);
-        participationRepository.save(participation);
+    public void updateStatus(Participation p, Status status) {
+        p.setStatus(status);
+        participationRepository.save(p);
+    }
+
+    public Iterable<Participation> getParticipationsByParticipant() {
+        Participant participant = (Participant) authUserService.getAuthenticatedUser();
+        return participationRepository.findAllByParticipant(participant);
     }
 }
