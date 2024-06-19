@@ -19,7 +19,7 @@ import java.util.UUID;
 public class BilletService {
     private final BilletRepository billetRepository;
     private final EpreuveService epreuveService;
-    private final AuthUserService authUserService;
+    private final UserService userService;
 
 
     public void createBillet(@NotNull BilletDto data) {
@@ -27,21 +27,21 @@ public class BilletService {
         if (billetRepository.countByEpreuve(epreuve) >= epreuve.getNbPlacesSpectateurs()) {
             throw new IllegalArgumentException("Plus de places disponibles");
         }
-        if (billetRepository.findBySpectateurAndEpreuve(authUserService.getAuthenticatedUser(), epreuve).size() + data.nbBillets() > 4) {
+        if (billetRepository.findBySpectateurAndEpreuve(userService.getAuthenticatedUser(), epreuve).size() + data.nbBillets() > 4) {
             throw new IllegalArgumentException("Vous dépassez le nombre de billets maximum par personne.");
         }
         for (int i = 0; i < data.nbBillets(); i++) {
             Billet billet = new Billet();
             billet.setEpreuve(epreuve);
             billet.setEtat(Etat.VALIDE);
-            billet.setSpectateur(authUserService.getAuthenticatedUser());
+            billet.setSpectateur(userService.getAuthenticatedUser());
             billet.setPrix(data.prix());
             billetRepository.save(billet);
         }
     }
 
     public double cancelBillet(@NotNull UUID epreuveId) {
-        List<Billet> billets = billetRepository.findBySpectateurAndEpreuve(authUserService.getAuthenticatedUser(), epreuveService.getEpreuveById(epreuveId));
+        List<Billet> billets = billetRepository.findBySpectateurAndEpreuve(userService.getAuthenticatedUser(), epreuveService.getEpreuveById(epreuveId));
         if (billets.isEmpty()) {
             throw new IllegalArgumentException("Vous n'avez pas de billet pour cette épreuve.");
         }
@@ -73,7 +73,7 @@ public class BilletService {
     }
 
     public Iterable<Billet> getBilletsBySpectateur() {
-        return billetRepository.findBySpectateur(authUserService.getAuthenticatedUser());
+        return billetRepository.findBySpectateur(userService.getAuthenticatedUser());
     }
 
     public double sellOneBillet(UUID uuid) {
@@ -87,10 +87,6 @@ public class BilletService {
             return billet.getPrix() * 0.5;
         }
         return billet.getPrix();
-    }
-
-    public int getNbBillets() {
-        return (int) billetRepository.count();
     }
 
     public Iterable<Billet> findAll() {

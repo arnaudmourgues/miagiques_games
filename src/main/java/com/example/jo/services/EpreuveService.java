@@ -16,7 +16,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class EpreuveService {
     private final EpreuveRepository epreuveRepository;
-    private final AuthUserService authUserService;
     private final InfrastructureSportiveService infrastructureSportiveService;
 
     public void deleteEpreuve(UUID epreuveId) {

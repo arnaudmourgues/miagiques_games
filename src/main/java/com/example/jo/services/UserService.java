@@ -17,7 +17,7 @@ import static com.example.jo.entities.enums.UserRole.*;
 
 @Service
 @AllArgsConstructor
-public class AuthUserService implements UserDetailsService {
+public class UserService implements UserDetailsService {
     UserRespository repository;
     DelegationService delegationService;
 

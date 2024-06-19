@@ -6,7 +6,6 @@ import com.example.jo.entities.Participation;
 import com.example.jo.entities.enums.Status;
 import com.example.jo.errors.exceptions.ForfeitException;
 import com.example.jo.repositories.ParticipationRepository;
-import jakarta.servlet.http.Part;
 import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
@@ -20,11 +19,11 @@ import java.util.UUID;
 public class ParticipationService {
     private final ParticipationRepository participationRepository;
     private final EpreuveService epreuveService;
-    private final AuthUserService authUserService;
+    private final UserService userService;
 
     public void addParticipation(UUID epreuveId) {
         Epreuve epreuve = epreuveService.getEpreuveById(epreuveId);
-        Participant participant = (Participant) authUserService.getAuthenticatedUser();
+        Participant participant = (Participant) userService.getAuthenticatedUser();
         if (isParticipantInEpreuve(participant, epreuve)) {
             throw new IllegalArgumentException("Le participant participe déjà à l'épreuve.");
         } else if (getParticipantsByEpreuve(epreuve.getId()).size() >= epreuve.getNbPlacesParticipants()) {
@@ -65,7 +64,7 @@ public class ParticipationService {
     }
 
     public Iterable<Participation> getParticipationsByParticipant() {
-        Participant participant = (Participant) authUserService.getAuthenticatedUser();
+        Participant participant = (Participant) userService.getAuthenticatedUser();
         return participationRepository.findAllByParticipant(participant);
     }
 

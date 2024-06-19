@@ -9,9 +9,6 @@ import com.example.jo.repositories.ResultatRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -19,7 +16,7 @@ import java.util.UUID;
 public class ResultatService {
     private final ResultatRepository resultatRepository;
     private final ParticipationService participationService;
-    private final AuthUserService authUserService;
+    private final UserService userService;
     private final EpreuveService epreuveService;
     private final DelegationService delegationService;
 
@@ -30,7 +27,7 @@ public class ResultatService {
             verif[i] = false;
         }
         for (ResultatsDto result : data.resultats()) {
-            Participant participant = authUserService.getParticipantById(UUID.fromString(result.participantId()));
+            Participant participant = userService.getParticipantById(UUID.fromString(result.participantId()));
             if (participant == null || !participationService.isParticipantInEpreuve(participant, epreuve)) {
                 throw new IllegalArgumentException("L'utilisateur n'existe pas ou n'est pas inscrit à cette épreuve");
             }
@@ -46,7 +43,7 @@ public class ResultatService {
             throw new IllegalArgumentException("Erreur dans l'attribution des positions, des positions sont manquantes.");
         }
         for (ResultatsDto result : data.resultats()) {
-            Participant participant = authUserService.getParticipantById(UUID.fromString(result.participantId()));
+            Participant participant = userService.getParticipantById(UUID.fromString(result.participantId()));
             Resultat resultat = new Resultat();
             resultat.setParticipant(participant);
             resultat.setEpreuve(epreuve);

@@ -2,8 +2,8 @@ package com.example.jo.controllers;
 
 import com.example.jo.entities.DTOs.StatDto;
 import com.example.jo.entities.Participant;
-import com.example.jo.services.AuthUserService;
-import com.example.jo.services.AuthUserSubService;
+import com.example.jo.services.UserService;
+import com.example.jo.services.UserSubService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 @AllArgsConstructor
 public class UserController {
-    private AuthUserService userService;
-    private AuthUserSubService subService;
+    private UserService userService;
+    private UserSubService subService;
 
     @GetMapping("/admin/participant/participants")
     @PreAuthorize("hasRole('ROLE_ORGANISATEUR')")

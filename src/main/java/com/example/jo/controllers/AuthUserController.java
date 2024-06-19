@@ -1,8 +1,8 @@
 package com.example.jo.controllers;
 
 import com.example.jo.entities.DTOs.*;
-import com.example.jo.services.AuthUserService;
-import com.example.jo.services.AuthUserSubService;
+import com.example.jo.services.UserService;
+import com.example.jo.services.UserSubService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 @CrossOrigin
 public class AuthUserController {
-    private AuthUserService service;
-    private AuthUserSubService subService;
+    private UserService service;
+    private UserSubService subService;
 
     @PostMapping("/signup")
     public ResponseEntity<JwtDto> signUp(@RequestBody SignUpUserDto data) {

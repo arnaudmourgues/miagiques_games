@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class AuthUserSubService {
+public class UserSubService {
     private AuthenticationManager authenticationManager;
     private TokenProvider tokenProvider;
     UserRespository repository;
