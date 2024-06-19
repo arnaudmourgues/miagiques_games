@@ -26,7 +26,7 @@ public class BilletService {
         if(billetRepository.countByEpreuve(epreuve) >= epreuve.getNbPlacesSpectateurs()) {
             throw new IllegalArgumentException("Plus de places disponibles");
         }
-        if(billetRepository.findBySpectateurAndEpreuve(authUserService.getAuthenticatedUser(), epreuve).size() + data.nbBillets() >= 4) {
+        if(billetRepository.findBySpectateurAndEpreuve(authUserService.getAuthenticatedUser(), epreuve).size() + data.nbBillets() > 4) {
             throw new IllegalArgumentException("Vous dépassez le nombre de billets maximum par personne.");
         }
         for(int i = 0; i < data.nbBillets(); i++) {
@@ -64,5 +64,9 @@ public class BilletService {
             return true;
         }
         return false;
+    }
+
+    public Iterable<Billet> getBillets() {
+        return billetRepository.findBySpectateur(authUserService.getAuthenticatedUser());
     }
 }

@@ -1,5 +1,6 @@
 package com.example.jo.controllers;
 
+import com.example.jo.entities.Billet;
 import com.example.jo.entities.DTOs.BilletDto;
 import com.example.jo.services.BilletService;
 import lombok.AllArgsConstructor;
@@ -12,11 +13,13 @@ import java.util.UUID;
 
 @RestController
 @AllArgsConstructor
+@CrossOrigin
 public class BilletController {
     private final BilletService billetService;
 
-    @PostMapping("/buyBillet")
+    @PostMapping("/billeterie/acheter-billet")
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('ROLE_SPECTATEUR')")
     public ResponseEntity<HttpStatus> buyBillet(@RequestBody BilletDto data) {
         billetService.createBillet(data);
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -37,4 +40,11 @@ public class BilletController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
+
+    @GetMapping("/billets")
+    @PreAuthorize("hasRole('ROLE_SPECTATEUR')")
+    public Iterable<Billet> getBillets() {
+        return billetService.getBillets();
+    }
+
 }

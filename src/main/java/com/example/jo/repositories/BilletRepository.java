@@ -17,4 +17,6 @@ public interface BilletRepository extends JpaRepository<Billet, UUID> {
     int countByEpreuve(Epreuve epreuve);
 
     List<Billet> findBySpectateurAndEpreuve(User user, Epreuve epreuve);
+
+    Iterable<Billet> findBySpectateur(User authenticatedUser);
 }
