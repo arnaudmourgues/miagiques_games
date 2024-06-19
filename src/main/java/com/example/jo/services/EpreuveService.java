@@ -3,18 +3,13 @@ package com.example.jo.services;
 import com.example.jo.entities.DTOs.EpreuveDto;
 import com.example.jo.entities.Epreuve;
 import com.example.jo.entities.InfrastructureSportive;
-import com.example.jo.entities.Participant;
-import com.example.jo.entities.enums.Status;
-import com.example.jo.errors.exceptions.ForfeitException;
 import com.example.jo.repositories.EpreuveRepository;
 import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.UUID;
 
 @Service
@@ -28,8 +23,8 @@ public class EpreuveService {
         epreuveRepository.deleteById(epreuveId);
     }
 
-    public Iterable<Epreuve> getAllEpreuves() {
-        return epreuveRepository.findAll();
+    public Iterable<Epreuve> getAllEpreuvesFuture() {
+        return epreuveRepository.findAllByDateIsAfterToday(Instant.now());
     }
 
     public Epreuve getEpreuveById(@NotNull UUID epreuveid) {
@@ -66,5 +61,9 @@ public class EpreuveService {
         epreuve.setNbPlacesParticipants(data.nbPlacesParticipants());
         epreuve.setNbPlacesSpectateurs(data.nbPlacesSpectateurs());
         epreuveRepository.save(epreuve);
+    }
+
+    public Iterable<Epreuve> getAllEpreuvesPast() {
+        return epreuveRepository.findAllByDateIsBeforeToday(Instant.now());
     }
 }

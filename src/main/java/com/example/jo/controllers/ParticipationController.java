@@ -28,7 +28,7 @@ public class ParticipationController {
 
     @GetMapping("/nbParticiptionByEpreuve/{epreuveId}")
     @PreAuthorize("hasRole('ROLE_PARTICIPANT')")
-    public int getParticipantsByEpreuve(@PathVariable String epreuveId) {
+    public int getNbParticipantsByEpreuve(@PathVariable String epreuveId) {
         return participationService.getParticipantsByEpreuve(UUID.fromString(epreuveId)).size();
     }
 
@@ -36,5 +36,11 @@ public class ParticipationController {
     @PreAuthorize("hasRole('ROLE_PARTICIPANT')")
     public Iterable<Participation> getParticipationsByParticipant() {
         return participationService.getParticipationsByParticipant();
+    }
+
+    @GetMapping("/participation/epreuve?={epreuveId}")
+    @PreAuthorize("hasRole('ROLE_ORGANISATEUR')")
+    public Iterable<Participation> getParticipationsByEpreuve(@PathVariable String epreuveId) {
+        return participationService.getParticipationsByEpreuve(UUID.fromString(epreuveId));
     }
 }

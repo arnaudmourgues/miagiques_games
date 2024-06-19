@@ -25,20 +25,17 @@ public class BilletController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PostMapping("/cancelBillet")
+    @DeleteMapping("/billeterie/vente-billet/{epreuveId}")
     @ResponseStatus(HttpStatus.OK)
-    public double cancelBillet(@RequestBody UUID billetId) {
-        return billetService.cancelBillet(billetId);
+    public double cancelBillet(@PathVariable String epreuveId) {
+        return billetService.cancelBillet(UUID.fromString(epreuveId));
     }
 
-    @PostMapping("/controlBillet")
+    @PutMapping("/controleur/billet/{billetId}")
     @PreAuthorize("hasRole('ROLE_CONTROLEUR')")
-    public ResponseEntity<Void> controlBillet(@RequestBody UUID billetId) {
-        if(billetService.controlBillet(billetId)) {
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
+    public ResponseEntity<HttpStatus> controlBillet(@PathVariable String billetId) {
+        billetService.controlBillet(UUID.fromString(billetId));
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @GetMapping("/billets")

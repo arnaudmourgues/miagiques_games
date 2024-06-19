@@ -32,9 +32,9 @@ public class ResultatService {
         Resultat resultat = new Resultat();
         resultat.setParticipant(participant);
         resultat.setEpreuve(epreuve);
-        resultat.setTemps(data.temps());
-        resultat.setPosition(data.position());
-        delegationService.addMedal(participant.getDelegation(), data.position());
+        //resultat.setTemps(data.temps());
+        //resultat.setPosition(data.position());
+        //delegationService.addMedal(participant.getDelegation(), data.position());
         resultatRepository.save(resultat);
     }
 }

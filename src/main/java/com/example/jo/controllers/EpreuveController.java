@@ -34,7 +34,15 @@ public class EpreuveController {
     }
 
     @GetMapping("/epreuve")
+    @PreAuthorize("hasRole('ROLE_SPECTATEUR')" +
+            " or hasRole('ROLE_PARTICIPANT')")
     public Iterable<Epreuve> getAllEpreuves() {
-        return epreuveService.getAllEpreuves();
+        return epreuveService.getAllEpreuvesFuture();
+    }
+
+    @GetMapping("/admin/epreuve/epreuves-passees")
+    @PreAuthorize("hasRole('ROLE_ORGANISATEUR')")
+    public Iterable<Epreuve> getAllEpreuvesAdmin() {
+        return epreuveService.getAllEpreuvesPast();
     }
 }

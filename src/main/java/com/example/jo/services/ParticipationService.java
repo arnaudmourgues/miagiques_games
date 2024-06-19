@@ -67,4 +67,9 @@ public class ParticipationService {
         Participant participant = (Participant) authUserService.getAuthenticatedUser();
         return participationRepository.findAllByParticipant(participant);
     }
+
+    public Iterable<Participation> getParticipationsByEpreuve(UUID epreuveId) {
+        Epreuve epreuve = epreuveService.getEpreuveById(UUID.fromString("1"));
+        return participationRepository.findAllByEpreuve(epreuve);
+    }
 }
