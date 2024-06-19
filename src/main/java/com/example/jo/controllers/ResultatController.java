@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public class ResultatController {
 
     @PostMapping("/admin/resultat/publier-resultat")
     @PreAuthorize("hasRole('ROLE_ORGANISATEUR')")
-    public void publiateResultat(ResultatDto data) {
+    public void publiateResultat(@RequestBody ResultatDto data) {
         resultatService.publiateResultat(data);
     }
 }

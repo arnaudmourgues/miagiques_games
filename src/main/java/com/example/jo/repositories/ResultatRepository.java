@@ -12,6 +12,5 @@ import java.util.UUID;
 
 @Repository
 public interface ResultatRepository extends JpaRepository<Resultat, UUID>{
-    @Query("SELECT r FROM Resultat r WHERE r.participant = ?1 AND r.epreuve = ?2")
-    Participation findByParticipantAndEpreuve(Participant participant, Epreuve epreuve);
+    Resultat findByParticipantAndEpreuve(Participant participant, Epreuve epreuve);
 }

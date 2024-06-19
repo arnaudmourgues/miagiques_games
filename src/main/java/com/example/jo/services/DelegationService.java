@@ -34,7 +34,6 @@ public class DelegationService {
             case 1 -> delegation.setNbMedaillesOr(delegation.getNbMedaillesOr() + 1);
             case 2 -> delegation.setNbMedaillesArgent(delegation.getNbMedaillesArgent() + 1);
             case 3 -> delegation.setNbMedaillesBronze(delegation.getNbMedaillesBronze() + 1);
-            default -> System.out.println("Pas de médaille pour cette position : " + i);
         }
         delegationRepository.save(delegation);
     }

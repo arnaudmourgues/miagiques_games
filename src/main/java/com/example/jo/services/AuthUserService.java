@@ -58,6 +58,7 @@ public class AuthUserService implements UserDetailsService {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserDetails user = loadUserByUsername(auth.getName());
         repository.delete((User) user);
+        SecurityContextHolder.clearContext();
     }
 
     public User getAuthenticatedUser() {
@@ -75,5 +76,9 @@ public class AuthUserService implements UserDetailsService {
 
     public Iterable<Participant> getParticipants() {
         return repository.findAllParticipants();
+    }
+
+    public Participant getParticipantById(UUID uuid) {
+        return repository.findParticipantById(uuid);
     }
 }

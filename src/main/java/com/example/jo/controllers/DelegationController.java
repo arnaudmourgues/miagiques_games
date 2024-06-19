@@ -32,7 +32,7 @@ public class DelegationController {
         delegationService.deleteDelegation(UUID.fromString(delegationId));
     }
 
-    @GetMapping("/classmentDelegation")
+    @GetMapping("/delegation/classement")
     public Iterable<Delegation> getClassmentDelegation() {
         return delegationService.findAllDelegationOrderByMedals();
     }

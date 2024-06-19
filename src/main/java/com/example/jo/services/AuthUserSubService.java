@@ -1,17 +1,14 @@
 package com.example.jo.services;
 
 import com.example.jo.config.auth.TokenProvider;
-import com.example.jo.entities.DTOs.JwtDto;
-import com.example.jo.entities.DTOs.SignInDto;
-import com.example.jo.entities.DTOs.SignUpDto;
-import com.example.jo.entities.DTOs.SignUpUserDto;
+import com.example.jo.entities.Billet;
+import com.example.jo.entities.DTOs.*;
 import com.example.jo.entities.Spectateur;
 import com.example.jo.entities.User;
 import com.example.jo.entities.enums.UserRole;
 import com.example.jo.repositories.UserRespository;
 import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,6 +20,7 @@ public class AuthUserSubService {
     private AuthenticationManager authenticationManager;
     private TokenProvider tokenProvider;
     UserRespository repository;
+    private BilletService billetService;
 
     public @NotNull JwtDto generateJwtToken(SignInDto data) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
@@ -46,5 +44,15 @@ public class AuthUserSubService {
         Spectateur newUser = new Spectateur(data.email(), encryptedPassword, data.nom(), data.prenom(), UserRole.SPECTATEUR);
         repository.save(newUser);
         return generateJwtToken(new SignInDto(data.email(), data.password()));
+    }
+
+    public StatDto getStatistiques() {
+        Iterable<Billet> billets = billetService.findAll();
+        long nbBillets = billets.spliterator().getExactSizeIfKnown();
+        double CA = 0;
+        for (Billet billet : billets) {
+            CA += billet.getPrix();
+        }
+        return new StatDto(nbBillets, CA);
     }
 }

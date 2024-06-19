@@ -37,6 +37,7 @@ public class ParticipationService {
         Participation participation = new Participation();
         participation.setParticipant(participant);
         participation.setEpreuve(epreuve);
+        participation.setStatus(Status.INSCRIT);
         participationRepository.save(participation);
     }
 
@@ -69,7 +70,7 @@ public class ParticipationService {
     }
 
     public Iterable<Participation> getParticipationsByEpreuve(UUID epreuveId) {
-        Epreuve epreuve = epreuveService.getEpreuveById(UUID.fromString("1"));
+        Epreuve epreuve = epreuveService.getEpreuveById(epreuveId);
         return participationRepository.findAllByEpreuve(epreuve);
     }
 }

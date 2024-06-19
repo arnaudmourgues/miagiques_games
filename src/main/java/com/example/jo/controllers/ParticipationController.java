@@ -38,7 +38,7 @@ public class ParticipationController {
         return participationService.getParticipationsByParticipant();
     }
 
-    @GetMapping("/participation/epreuve?={epreuveId}")
+    @GetMapping("/admin/participation/epreuve/{epreuveId}")
     @PreAuthorize("hasRole('ROLE_ORGANISATEUR')")
     public Iterable<Participation> getParticipationsByEpreuve(@PathVariable String epreuveId) {
         return participationService.getParticipationsByEpreuve(UUID.fromString(epreuveId));

@@ -25,6 +25,5 @@ public class Participation {
     private Epreuve epreuve;
     @ManyToOne
     @JoinColumn(name = "id_participant", referencedColumnName = "id", nullable = false)
-    @JsonBackReference
     private Participant participant;
 }

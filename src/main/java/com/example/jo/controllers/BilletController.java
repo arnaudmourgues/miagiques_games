@@ -27,8 +27,14 @@ public class BilletController {
 
     @DeleteMapping("/billeterie/vente-billet/{epreuveId}")
     @ResponseStatus(HttpStatus.OK)
-    public double cancelBillet(@PathVariable String epreuveId) {
+    public double sellBillets(@PathVariable String epreuveId) {
         return billetService.cancelBillet(UUID.fromString(epreuveId));
+    }
+
+    @DeleteMapping("/billeterie/vente-billet/billet/{billetId}")
+    @ResponseStatus(HttpStatus.OK)
+    public double sellOneBillet(@PathVariable String billetId) {
+        return billetService.sellOneBillet(UUID.fromString(billetId));
     }
 
     @PutMapping("/controleur/billet/{billetId}")
@@ -41,7 +47,7 @@ public class BilletController {
     @GetMapping("/billets")
     @PreAuthorize("hasRole('ROLE_SPECTATEUR')")
     public Iterable<Billet> getBillets() {
-        return billetService.getBillets();
+        return billetService.getBilletsBySpectateur();
     }
 
 }

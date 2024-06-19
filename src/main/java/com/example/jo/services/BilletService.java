@@ -11,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -52,10 +51,14 @@ public class BilletService {
                 throw new ForfeitException("L'épreuve est dans moins de 3 jours, vous ne pouvez plus annuler votre billet.");
             }
             if (billet.getEtat() == Etat.VALIDE) {
-                resteARembourser += billet.getPrix();
+                if (billet.getEpreuve().getDate().isBefore(Instant.now().plusSeconds(7 * 24 * 60 * 60))) {
+                    resteARembourser += billet.getPrix() * 0.5;
+                } else {
+                    resteARembourser += billet.getPrix();
+                }
+                billet.setEtat(Etat.ANNULE);
+                billetRepository.save(billet);
             }
-            billet.setEtat(Etat.ANNULE);
-            billetRepository.save(billet);
         }
         return resteARembourser;
     }
@@ -69,7 +72,28 @@ public class BilletService {
         billetRepository.save(billet);
     }
 
-    public Iterable<Billet> getBillets() {
+    public Iterable<Billet> getBilletsBySpectateur() {
         return billetRepository.findBySpectateur(authUserService.getAuthenticatedUser());
+    }
+
+    public double sellOneBillet(UUID uuid) {
+        Billet billet = billetRepository.findById(uuid).orElseThrow(() -> new IllegalArgumentException("Le billet n'existe pas."));
+        if (billet.getEtat() != Etat.VALIDE) {
+            throw new IllegalArgumentException("Le billet a déjà été utilisé ou annulé.");
+        }
+        billet.setEtat(Etat.ANNULE);
+        billetRepository.save(billet);
+        if (billet.getEpreuve().getDate().isBefore(Instant.now().plusSeconds(7 * 24 * 60 * 60))) {
+            return billet.getPrix() * 0.5;
+        }
+        return billet.getPrix();
+    }
+
+    public int getNbBillets() {
+        return (int) billetRepository.count();
+    }
+
+    public Iterable<Billet> findAll() {
+        return billetRepository.findAll();
     }
 }

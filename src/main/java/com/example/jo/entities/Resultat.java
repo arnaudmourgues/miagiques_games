@@ -23,8 +23,8 @@ public class Resultat {
     @JoinColumn(name = "id_participant", referencedColumnName = "id", nullable = false)
     private Participant participant;
 
-    @Column(nullable = false)
-    private double temps;
+    @Column
+    private String temps;
 
     @Column(nullable = false)
     private int position;

@@ -5,7 +5,6 @@ import java.util.UUID;
 
 public record ResultatDto(
         UUID epreuveId,
-        List<UUID> participantIds,
-        List<Double> temps
+        List<ResultatsDto> resultats
 ) {
 }

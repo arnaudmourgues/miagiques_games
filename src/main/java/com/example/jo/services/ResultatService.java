@@ -1,12 +1,18 @@
 package com.example.jo.services;
 
 import com.example.jo.entities.DTOs.ResultatDto;
+import com.example.jo.entities.DTOs.ResultatsDto;
 import com.example.jo.entities.Epreuve;
 import com.example.jo.entities.Participant;
 import com.example.jo.entities.Resultat;
 import com.example.jo.repositories.ResultatRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -18,23 +24,45 @@ public class ResultatService {
     private final DelegationService delegationService;
 
     public void publiateResultat(ResultatDto data) {
-        Participant participant = (Participant) authUserService.getAuthenticatedUser();
         Epreuve epreuve = epreuveService.getEpreuveById(data.epreuveId());
-        if(participant == null || epreuve == null) {
-            throw new IllegalArgumentException("L'utilisateur ou l'épreuve n'existe pas");
+        boolean[] verif = new boolean[data.resultats().size()];
+        for (int i = 0; i < verif.length; i++) {
+            verif[i] = false;
         }
-        if (!participationService.isParticipantInEpreuve(participant, epreuve)) {
-            throw new IllegalArgumentException("Le participant n'est pas inscrit à cette épreuve");
+        for (ResultatsDto result : data.resultats()) {
+            Participant participant = authUserService.getParticipantById(UUID.fromString(result.participantId()));
+            if (participant == null || !participationService.isParticipantInEpreuve(participant, epreuve)) {
+                throw new IllegalArgumentException("L'utilisateur n'existe pas ou n'est pas inscrit à cette épreuve");
+            }
+            if (resultatRepository.findByParticipantAndEpreuve(participant, epreuve) != null) {
+                throw new IllegalArgumentException("Les résultats ont déjà été rentrés.");
+            }
+            if (verif[result.position() - 1]) {
+                throw new IllegalArgumentException("Erreur dans l'attrbution des positions, duplication de la position " + result.position());
+            }
+            verif[result.position() - 1] = true;
         }
-        if (resultatRepository.findByParticipantAndEpreuve(participant, epreuve) != null) {
-            throw new IllegalArgumentException("Le résultat existe déjà");
+        if (!isPositionsCorrect(verif)) {
+            throw new IllegalArgumentException("Erreur dans l'attribution des positions, des positions sont manquantes.");
         }
-        Resultat resultat = new Resultat();
-        resultat.setParticipant(participant);
-        resultat.setEpreuve(epreuve);
-        //resultat.setTemps(data.temps());
-        //resultat.setPosition(data.position());
-        //delegationService.addMedal(participant.getDelegation(), data.position());
-        resultatRepository.save(resultat);
+        for (ResultatsDto result : data.resultats()) {
+            Participant participant = authUserService.getParticipantById(UUID.fromString(result.participantId()));
+            Resultat resultat = new Resultat();
+            resultat.setParticipant(participant);
+            resultat.setEpreuve(epreuve);
+            resultat.setTemps(result.temps());
+            resultat.setPosition(result.position());
+            delegationService.addMedal(participant.getDelegation(), result.position());
+            resultatRepository.save(resultat);
+        }
+    }
+
+    private boolean isPositionsCorrect(boolean[] verif) {
+        for (boolean b : verif) {
+            if (!b) {
+                return false;
+            }
+        }
+        return true;
     }
 }
