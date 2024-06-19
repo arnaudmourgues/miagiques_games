@@ -26,13 +26,13 @@ public class ParticipationController {
         participationService.deleteParticipation(UUID.fromString(participationId));
     }
 
-    @GetMapping("/nbParticiptionByEpreuve/{epreuveId}")
+    @GetMapping("/participation/nombre-partipations/{epreuveId}")
     @PreAuthorize("hasRole('ROLE_PARTICIPANT')")
     public int getNbParticipantsByEpreuve(@PathVariable String epreuveId) {
         return participationService.getParticipantsByEpreuve(UUID.fromString(epreuveId)).size();
     }
 
-    @GetMapping("/participationParticipant")
+    @GetMapping("/participation")
     @PreAuthorize("hasRole('ROLE_PARTICIPANT')")
     public Iterable<Participation> getParticipationsByParticipant() {
         return participationService.getParticipationsByParticipant();

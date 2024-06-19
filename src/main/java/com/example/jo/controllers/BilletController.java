@@ -44,7 +44,7 @@ public class BilletController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @GetMapping("/billets")
+    @GetMapping("/billeterie/billets")
     @PreAuthorize("hasRole('ROLE_SPECTATEUR')")
     public Iterable<Billet> getBillets() {
         return billetService.getBilletsBySpectateur();

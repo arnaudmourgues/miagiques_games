@@ -33,7 +33,7 @@ public class EpreuveController {
         epreuveService.updateEpreuve(data, UUID.fromString(epreuveId));
     }
 
-    @GetMapping("/epreuve")
+    @GetMapping("/epreuve/epreuves-futures")
     @PreAuthorize("hasRole('ROLE_SPECTATEUR')" +
             " or hasRole('ROLE_PARTICIPANT')")
     public Iterable<Epreuve> getAllEpreuves() {

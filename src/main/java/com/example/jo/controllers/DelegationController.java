@@ -37,7 +37,7 @@ public class DelegationController {
         return delegationService.findAllDelegationOrderByMedals();
     }
 
-    @GetMapping("/delegations")
+    @GetMapping("/delegation/delegations")
     public Iterable<Delegation> getDelegations() {
         return delegationService.findAllDelegation();
     }
