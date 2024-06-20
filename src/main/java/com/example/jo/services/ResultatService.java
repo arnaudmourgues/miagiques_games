@@ -9,6 +9,8 @@ import com.example.jo.repositories.ResultatRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -22,6 +24,10 @@ public class ResultatService {
 
     public void publiateResultat(ResultatDto data) {
         Epreuve epreuve = epreuveService.getEpreuveById(data.epreuveId());
+        //if epreuve is in the future throw exception
+        if (epreuve.getDate().isAfter(Instant.now())) {
+            throw new IllegalArgumentException("L'épreuve n'est pas encore passée.");
+        }
         boolean[] verif = new boolean[data.resultats().size()];
         for (int i = 0; i < verif.length; i++) {
             verif[i] = false;
@@ -61,5 +67,10 @@ public class ResultatService {
             }
         }
         return true;
+    }
+
+    public List<Resultat> getResultatsByParticipant() {
+        Participant participant = (Participant) userService.getAuthenticatedUser();
+        return resultatRepository.findByParticipant(participant);
     }
 }

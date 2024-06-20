@@ -25,6 +25,10 @@ public class Participant extends User {
     @JsonIgnore
     private List<Participation> participations;
 
+    @OneToMany(mappedBy = "participant", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Resultat> resultats;
+
     public Participant(String login, String encryptedPassword, UserRole userRole) {
         super(login, encryptedPassword, userRole);
     }

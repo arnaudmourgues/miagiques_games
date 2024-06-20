@@ -40,6 +40,12 @@ public class EpreuveService {
             throw new IllegalArgumentException("Le nombre de places spectatrices est supérieur à celui de l'infrastructure sportive.");
         }
         Instant i = new Date(data.date().year() - 1900, data.date().month()-1, data.date().day(), data.date().hour(), data.date().minute(), 0).toInstant();
+        if(i.isBefore(Instant.now())) {
+            throw new IllegalArgumentException("La date de l'épreuve est passée.");
+        }
+        if(data.nbPlacesParticipants() <= 0 || data.nbPlacesSpectateurs() <= 0) {
+            throw new IllegalArgumentException("Le nombre de places doit être supérieur à 0 pour les participants et les spectateurs.");
+        }
         Epreuve epreuve = new Epreuve();
         epreuve.setNom(data.nom());
         epreuve.setDate(i);
@@ -51,9 +57,10 @@ public class EpreuveService {
 
     public void updateEpreuve(EpreuveDto data, UUID uuid) {
         Date date = new Date(data.date().year() - 1900, data.date().month()-1, data.date().day(), data.date().hour(), data.date().minute(), 0);
-        System.out.println(date);
         Instant i = date.toInstant();
-        System.out.println(i);
+        if(i.isBefore(Instant.now())) {
+            throw new IllegalArgumentException("La date de l'épreuve est passée.");
+        }
         Epreuve epreuve = getEpreuveById(uuid);
         epreuve.setNom(data.nom());
         epreuve.setDate(i);

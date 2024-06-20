@@ -1,5 +1,6 @@
 package com.example.jo.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -30,4 +32,12 @@ public class Epreuve {
     private int nbPlacesSpectateurs;
     @Column(nullable = false)
     private int nbPlacesParticipants;
+
+    @OneToMany(mappedBy = "epreuve", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Participation> participations;
+
+    @OneToMany(mappedBy = "epreuve", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Resultat> resultats;
 }

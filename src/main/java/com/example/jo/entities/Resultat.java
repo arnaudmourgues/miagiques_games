@@ -15,11 +15,11 @@ public class Resultat {
     @GeneratedValue
     private UUID id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "id_epreuve", referencedColumnName = "id", nullable = false)
     private Epreuve epreuve;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "id_participant", referencedColumnName = "id", nullable = false)
     private Participant participant;
 
